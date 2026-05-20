@@ -1,23 +1,32 @@
-import Navbar from "./components/Navbar"
-import Hero from "./components/Hero"
-import About from "./components/About"
-import EventDetails from "./components/EventDetails"
-import TeamStructure from "./components/TeamStructure"
-import RegistrationForm from "./components/RegistrationForm"
-import Footer from "./components/Footer"
+import { ThemeProvider } from "@/components/ThemeProvider"
+import ScrollProgress from "@/components/effects/ScrollProgress"
+import Navbar from "@/components/Navbar"
+import Hero from "@/components/Hero"
+import PhotoGallery from "@/components/PhotoGallery"
+import About from "@/components/About"
+import EventDetails from "@/components/EventDetails"
+import TeamStructure from "@/components/TeamStructure"
+import RegisterCTA from "@/components/RegisterCTA"
+import RegistrationForm from "@/components/RegistrationForm"
+import Footer from "@/components/Footer"
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <EventDetails />
-        <TeamStructure />
-        <RegistrationForm />
-      </main>
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <ScrollProgress />
+        <Navbar />
+        <main>
+          <Hero />
+          <PhotoGallery />
+          <About />
+          <EventDetails />
+          <TeamStructure />
+          <RegisterCTA />
+          <RegistrationForm />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
   )
 }

@@ -1,5 +1,10 @@
-// Single source of truth for all landing-page copy.
-// Replace strings here to update the page — no component edits required.
+import sf2025 from "./assets/photos/sf2025.png"
+import sfganadores2025 from "./assets/photos/sfganadores2025.png"
+import participantes from "./assets/photos/participantes.png"
+import presentation from "./assets/photos/presentation.png"
+import visionPro from "./assets/photos/vision-pro.png"
+import swiftLogoOrange from "./assets/photos/swift-logo-orange.png"
+import swiftLogoWhite from "./assets/photos/swift-logo-white.png"
 
 export const content = {
   brand: {
@@ -7,9 +12,12 @@ export const content = {
     shortName: "SCF",
     org: "SwiftTec",
     tagline: "A hackathon built for Swift.",
+    logo: swiftLogoOrange,
+    logoWhite: swiftLogoWhite,
   },
 
   nav: [
+    { label: "Gallery", href: "#gallery" },
     { label: "About", href: "#about" },
     { label: "Event", href: "#event" },
     { label: "Teams", href: "#teams" },
@@ -17,8 +25,8 @@ export const content = {
   ],
 
   hero: {
-    eyebrow: "SwiftTec presents",
-    title: "Swift Challenge Fest",
+    eyebrow: "Second Edition",
+    title: "Swift Challenge Fest 2026",
     subtitle:
       "Three days. One language. Endless ideas. Join the SwiftTec community for a hackathon dedicated to building the next generation of apps with Swift.",
     primaryCta: { label: "Register now", href: "#register" },
@@ -30,6 +38,40 @@ export const content = {
     ],
   },
 
+  gallery: {
+    eyebrow: "Last year",
+    title: "Swift Challenge Fest 2025",
+    description:
+      "A glimpse at the community, the competition, and the energy that brought the first edition to life.",
+    featured: {
+      src: sf2025,
+      caption: "Swift Challenge Fest 2025 — The community",
+      alt: "Large group photo of Swift Challenge Fest 2025 participants and organizers",
+    },
+    photos: [
+      {
+        src: sfganadores2025,
+        caption: "Swift Challenge Fest 2025 — First place winners",
+        alt: "Winners receiving first place awards on stage",
+      },
+      {
+        src: participantes,
+        caption: "Swift Challenge Fest 2025 — Designing together",
+        alt: "Participants collaborating on a whiteboard wireframe",
+      },
+      {
+        src: presentation,
+        caption: "Swift Challenge Fest 2025 — Ensamblando Realidades",
+        alt: "Presenters on stage with Swift Challenge Fest branding",
+      },
+      {
+        src: visionPro,
+        caption: "Swift Challenge Fest 2025 — Exploring spatial computing",
+        alt: "Developer using Apple Vision Pro during the hackathon",
+      },
+    ],
+  },
+
   about: {
     eyebrow: "Who we are",
     title: "We are SwiftTec.",
@@ -37,6 +79,11 @@ export const content = {
       "SwiftTec is a community of engineers, designers, and students who believe Swift is one of the most exciting languages to build with today — across iOS, macOS, server, and beyond.",
       "Swift Challenge Fest is our flagship hackathon: a focused weekend where builders ship Swift projects, learn from mentors, and meet the people pushing the language forward.",
     ],
+    image: {
+      src: presentation,
+      caption: "Swift Challenge Fest 2025 — Opening presentation",
+      alt: "Team presenting at Swift Challenge Fest 2025",
+    },
   },
 
   event: {
@@ -59,6 +106,7 @@ export const content = {
         label: "Format",
         value: "72-hour hackathon",
         sub: "Workshops · mentorship · final demos",
+        image: visionPro,
       },
       {
         label: "Theme",
@@ -90,6 +138,12 @@ export const content = {
         body: "Product, design, and engineering leaders evaluating final demos on craft, originality, and execution.",
       },
     ],
+  },
+
+  registerCta: {
+    headline: "Are you in?",
+    description:
+      "Join builders, mentors, and judges for three days of Swift. Registration opens soon — save your spot today.",
   },
 
   registration: {

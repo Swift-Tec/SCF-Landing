@@ -1,13 +1,22 @@
-import { content } from "../content"
-import logo from "../assets/logo.png"
+import { content } from "@/content"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { useTheme } from "@/hooks/useTheme"
+import { Sun, Moon } from "lucide-react"
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <header className="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl -translate-x-1/2 rounded-full border border-white/10 bg-black/50 px-6 py-3 shadow-2xl backdrop-blur-2xl">
+      <div className="flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
-          <img src={logo} alt="" className="h-9 w-9" />
-          <span className="text-sm font-semibold tracking-wide text-white">
+          <img
+            src={content.brand.logoWhite}
+            alt=""
+            className="size-9"
+          />
+          <span className="font-sans text-sm font-semibold tracking-wide text-white">
             {content.brand.name}
           </span>
         </a>
@@ -17,19 +26,30 @@ export default function Navbar() {
             <a
               key={item.href}
               href={item.href}
-              className="text-sm text-slate-400 transition-colors hover:text-white"
+              className="font-sans text-sm text-white/70 transition-colors hover:text-white"
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <a
-          href="#register"
-          className="rounded-full bg-flame-500 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-flame-500/20 transition hover:bg-flame-400"
-        >
-          Register
-        </a>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className={cn(
+              "inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white",
+            )}
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          </button>
+          <a
+            href="#register"
+            className={cn(buttonVariants({ variant: "glass", size: "sm" }), "rounded-full px-5")}
+          >
+            Register
+          </a>
+        </div>
       </div>
     </header>
   )
