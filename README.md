@@ -1,26 +1,31 @@
 # SCF-Landing
 
-Landing page con descripción y registro para el Swift Challenge Fest 2026.
+Landing page for **Swift Challenge Fest 2026** — description, photo gallery, and email registration.
 
 ## Stack
 
 - Vite + React 18 + TypeScript
-- Tailwind CSS v4 (CSS-first config in `src/index.css`)
-- Supabase (`@supabase/supabase-js`) for the registration email capture
+- Tailwind CSS v4 + shadcn/ui (base-nova)
+- Framer Motion (scroll reveals, 3D cards, text lens)
+- Paper Design Shaders (`@paper-design/shaders-react`) for hero/footer backgrounds and liquid-metal logo
+- Supabase (`@supabase/supabase-js`) for registration email capture
+- **pnpm** as the package manager
 
 ## Getting started
 
 ```bash
-npm install
+pnpm install
 cp .env.example .env   # fill in your Supabase project values
-npm run dev
+pnpm dev
 ```
 
 Open <http://localhost:5173>.
 
 ## Editing copy
 
-All landing-page text lives in **`src/content.ts`**. Change strings there and every section updates — no component edits required.
+All landing-page text and photo captions live in **`src/content.ts`**. Change strings there and every section updates — no component edits required.
+
+Event photos are in **`src/assets/photos/`**.
 
 ## Supabase setup
 
@@ -50,7 +55,11 @@ The form gracefully handles the "not configured" state — it'll show a hint unt
 
 ## Scripts
 
-- `npm run dev` — start the dev server
-- `npm run build` — typecheck + production build to `dist/`
-- `npm run preview` — preview the production build
-- `npm run lint` — typecheck only
+- `pnpm dev` — start the dev server
+- `pnpm build` — typecheck + production build to `dist/`
+- `pnpm preview` — preview the production build
+- `pnpm lint` — typecheck only
+
+## Performance notes
+
+Shader components (hero background, liquid-metal logo, footer) are lazy-loaded and respect `prefers-reduced-motion` (static frame when enabled). WebGL is required for shader effects.
