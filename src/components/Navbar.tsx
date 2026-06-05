@@ -30,7 +30,7 @@ export default function Navbar() {
     >
       <div className="flex items-center justify-between px-6">
         <a href="#" className="flex items-center gap-2.5">
-          <span className="font-sans text-sm font-semibold tracking-tight text-foreground">
+          <span className="font-sans text-base font-semibold tracking-tight text-foreground">
             {content.brand.name}
           </span>
         </a>
@@ -53,7 +53,7 @@ export default function Navbar() {
                 visible: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="font-sans text-sm font-normal text-[#515154] transition-colors hover:text-foreground"
+              className="font-sans text-base font-normal text-[#515154] transition-colors hover:text-foreground"
             >
               {item.label}
             </MotionLink>
@@ -69,8 +69,8 @@ export default function Navbar() {
             <Link
               to="/register"
               className={cn(
-                buttonVariants({ variant: "cta", size: "sm" }),
-                "rounded-full px-5 font-semibold",
+                buttonVariants({ variant: "cta", size: "default" }),
+                "rounded-full px-6 text-base font-semibold",
               )}
             >
               Register
