@@ -1,0 +1,320 @@
+import { useState, type FormEvent } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Link } from "react-router-dom"
+import { Plus, Trash2, ArrowLeft, CheckCircle2 } from "lucide-react"
+import { registerTeam, type TeamMember } from "@/lib/supabase"
+import { sectionTints } from "@/lib/sectionTints"
+import { Button } from "@/components/ui/button"
+import { content } from "@/content"
+import vectorSparkles from "@/assets/photos/Vector-1.png"
+import vectorHeart from "@/assets/photos/Vector-2.png"
+import vectorMail from "@/assets/photos/Vector@2x-1.png"
+import vectorSwirl from "@/assets/photos/Vector@2x-2.png"
+
+const tint = sectionTints.register
+
+type Status = "idle" | "submitting" | "success" | "error"
+
+const EMPTY_MEMBER: TeamMember = { name: "", role: "", email: "" }
+
+const inputClass =
+  "w-full border-0 border-b border-border bg-transparent pb-2 font-sans text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-foreground/50 transition-colors"
+
+const labelClass = "block font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2"
+
+function Field({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-0">
+      <label className={labelClass}>{label}</label>
+      {children}
+    </div>
+  )
+}
+
+export default function TeamRegisterPage() {
+  const [teamName, setTeamName] = useState("")
+  const [university, setUniversity] = useState("")
+  const [contactEmail, setContactEmail] = useState("")
+  const [projectIdea, setProjectIdea] = useState("")
+  const [members, setMembers] = useState<TeamMember[]>([{ ...EMPTY_MEMBER }])
+  const [status, setStatus] = useState<Status>("idle")
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  function addMember() {
+    if (members.length >= 5) return
+    setMembers((prev) => [...prev, { ...EMPTY_MEMBER }])
+  }
+
+  function removeMember(i: number) {
+    setMembers((prev) => prev.filter((_, idx) => idx !== i))
+  }
+
+  function updateMember(i: number, field: keyof TeamMember, value: string) {
+    setMembers((prev) =>
+      prev.map((m, idx) => (idx === i ? { ...m, [field]: value } : m)),
+    )
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setStatus("submitting")
+    setErrorMsg(null)
+
+    try {
+      await registerTeam({
+        team_name: teamName,
+        contact_email: contactEmail,
+        university,
+        project_idea: projectIdea,
+        members: members.filter((m) => m.name.trim()),
+      })
+      setStatus("success")
+    } catch (err) {
+      setStatus("error")
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.")
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6">
+        <img src={vectorSparkles} alt="" aria-hidden className="pointer-events-none absolute -top-10 -right-10 w-64 opacity-70 select-none" />
+        <img src={vectorHeart} alt="" aria-hidden className="pointer-events-none absolute -bottom-10 -left-10 w-64 opacity-60 select-none" />
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex max-w-lg flex-col items-center text-center"
+        >
+          <CheckCircle2 className="size-16 mb-6" style={{ color: tint }} />
+          <h1 className="font-sans text-4xl font-semibold" style={{ color: tint }}>
+            You're registered!
+          </h1>
+          <p className="mt-4 font-sans text-lg text-muted-foreground">
+            Team <span className="font-semibold text-foreground/70">"{teamName}"</span> is on the list.
+            We'll reach out to <span className="font-semibold text-foreground/70">{contactEmail}</span> with next steps.
+          </p>
+          <Link
+            to="/"
+            className="mt-10 inline-flex items-center gap-2 font-sans text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground/70"
+          >
+            <ArrowLeft className="size-4" />
+            Back to home
+          </Link>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <img src={vectorSparkles} alt="" aria-hidden className="pointer-events-none absolute -top-8 -right-12 w-64 opacity-65 select-none" />
+      <img src={vectorSwirl} alt="" aria-hidden className="pointer-events-none absolute top-1/3 -left-14 w-56 opacity-55 select-none" />
+      <img src={vectorMail} alt="" aria-hidden className="pointer-events-none absolute -bottom-8 -right-10 w-60 opacity-50 select-none" />
+      <img src={vectorHeart} alt="" aria-hidden className="pointer-events-none absolute bottom-1/4 -left-12 w-52 opacity-50 select-none" />
+
+      <div className="mx-auto max-w-2xl px-6 py-16 md:py-24">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground/70 mb-12"
+        >
+          <ArrowLeft className="size-4" />
+          Back to home
+        </Link>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest" style={{ color: tint }}>
+            {content.brand.shortName} · {new Date().getFullYear()}
+          </p>
+          <h1 className="mt-3 font-sans text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl" style={{ color: tint }}>
+            Register your team
+          </h1>
+          <p className="mt-5 font-sans text-lg text-muted-foreground">
+            Fill in your team details below. You can have up to 5 members.
+          </p>
+        </motion.div>
+
+        <form onSubmit={handleSubmit} className="mt-14 flex flex-col gap-10">
+          {/* Team info */}
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-8"
+          >
+            <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground/70">
+              Team Info
+            </h2>
+
+            <Field label="Team Name">
+              <input
+                type="text"
+                required
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+                placeholder="e.g. The Swift Builders"
+                className={inputClass}
+              />
+            </Field>
+
+            <Field label="University / Institution">
+              <input
+                type="text"
+                required
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
+                placeholder="e.g. ITESM Campus Monterrey"
+                className={inputClass}
+              />
+            </Field>
+
+            <Field label="Contact Email">
+              <input
+                type="email"
+                required
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+                placeholder="team-lead@example.com"
+                className={inputClass}
+              />
+            </Field>
+
+            <Field label="Project Idea (optional)">
+              <textarea
+                rows={3}
+                value={projectIdea}
+                onChange={(e) => setProjectIdea(e.target.value)}
+                placeholder="Briefly describe what you plan to build…"
+                className={`${inputClass} resize-none`}
+              />
+            </Field>
+          </motion.section>
+
+          {/* Members */}
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-6"
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground/70">
+                Team Members
+              </h2>
+              <span className="font-sans text-xs text-muted-foreground/70">{members.length} / 5</span>
+            </div>
+
+            <AnimatePresence initial={false}>
+              {members.map((member, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="rounded-2xl border border-border bg-card p-6"
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="font-sans text-xs font-semibold text-muted-foreground/70 uppercase tracking-widest">
+                      Member {i + 1}
+                    </span>
+                    {members.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeMember(i)}
+                        className="text-black/25 transition-colors hover:text-red-400"
+                        aria-label="Remove member"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-6 sm:grid sm:grid-cols-2">
+                    <Field label="Full Name">
+                      <input
+                        type="text"
+                        required
+                        value={member.name}
+                        onChange={(e) => updateMember(i, "name", e.target.value)}
+                        placeholder="Jane Appleseed"
+                        className={inputClass}
+                      />
+                    </Field>
+                    <Field label="Role">
+                      <input
+                        type="text"
+                        value={member.role}
+                        onChange={(e) => updateMember(i, "role", e.target.value)}
+                        placeholder="e.g. iOS Developer"
+                        className={inputClass}
+                      />
+                    </Field>
+                    <Field label="Email">
+                      <input
+                        type="email"
+                        value={member.email}
+                        onChange={(e) => updateMember(i, "email", e.target.value)}
+                        placeholder="jane@example.com"
+                        className={`${inputClass} sm:col-span-2`}
+                      />
+                    </Field>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+
+            {members.length < 5 && (
+              <button
+                type="button"
+                onClick={addMember}
+                className="flex items-center gap-2 self-start rounded-full border border-border px-4 py-2 font-sans text-sm text-muted-foreground transition-colors hover:border-border/60 hover:text-foreground/60"
+              >
+                <Plus className="size-4" />
+                Add member
+              </button>
+            )}
+          </motion.section>
+
+          {/* Submit */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-4 pt-4"
+          >
+            {status === "error" && (
+              <p className="rounded-xl bg-red-50 px-4 py-3 font-sans text-sm text-red-600">
+                {errorMsg}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              variant="cta"
+              size="lg"
+              disabled={status === "submitting"}
+              className="h-14 w-full rounded-full text-base font-semibold"
+              style={{ backgroundColor: tint, borderColor: tint }}
+            >
+              {status === "submitting" ? "Registering…" : "Register Team"}
+            </Button>
+
+            <p className="text-center font-sans text-xs text-muted-foreground/70">
+              By registering you agree to our event rules and code of conduct.
+            </p>
+          </motion.div>
+        </form>
+      </div>
+    </div>
+  )
+}

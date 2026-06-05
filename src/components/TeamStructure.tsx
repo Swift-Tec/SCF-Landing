@@ -1,60 +1,63 @@
+import { Laptop, UsersRound, Award } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { content } from "@/content"
-import TiltCard from "@/components/effects/TiltCard"
+import Section from "@/components/apple/Section"
+import SectionHeading from "@/components/apple/SectionHeading"
+import FeatureCard from "@/components/apple/FeatureCard"
 import FadeIn from "@/components/effects/FadeIn"
-import { Badge } from "@/components/ui/badge"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import vectorSmiley from "@/assets/photos/Vector-4.png"
+import vectorGoldSparkles from "@/assets/photos/Vector@2x-4.png"
+import FloatingDecoration from "@/components/effects/FloatingDecoration"
+
+const roleIcons: Record<string, LucideIcon> = {
+  Builders: Laptop,
+  Mentors: UsersRound,
+  Judges: Award,
+}
 
 export default function TeamStructure() {
   const { teams } = content
 
   return (
-    <section id="teams" className="border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <FadeIn className="max-w-2xl">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            {teams.eyebrow}
-          </p>
-          <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl lg:text-6xl">
-            {teams.title}
-          </h2>
-          <p className="mt-6 font-sans text-lg font-light text-muted-foreground">
-            {teams.description}
-          </p>
-        </FadeIn>
+    <Section
+      id="teams"
+      decoration={
+        <>
+          <FloatingDecoration
+            src={vectorSmiley}
+            className="absolute -right-16 top-16 w-60 -rotate-6 opacity-65 md:w-72 lg:w-80"
+            y={10}
+            delay={0.1}
+          />
+          <FloatingDecoration
+            src={vectorGoldSparkles}
+            className="absolute -left-10 bottom-14 w-56 rotate-6 opacity-60 md:w-68 lg:w-72"
+            y={11}
+            rotate={5}
+            delay={0.3}
+          />
+        </>
+      }
+    >
+      <SectionHeading
+        eyebrow={teams.eyebrow}
+        title={teams.title}
+        description={teams.description}
+        size="hero"
+        tint="teams"
+      />
 
-        <div className="mt-16 grid gap-6 md:grid-cols-3">
-          {teams.roles.map((role, index) => (
-            <FadeIn key={role.title} delay={index * 0.1}>
-              <TiltCard className="h-full">
-                <Card className="h-full border-border bg-card/80 transition-colors hover:border-primary/40">
-                  <CardHeader>
-                    <Badge
-                      variant="outline"
-                      className="w-fit border-secondary/30 bg-secondary/10 font-sans text-[0.65rem] uppercase tracking-[0.18em] text-secondary-foreground"
-                    >
-                      {role.size}
-                    </Badge>
-                    <CardTitle className="font-display text-2xl text-foreground">
-                      {role.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="font-sans text-base font-light leading-relaxed">
-                      {role.body}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              </TiltCard>
-            </FadeIn>
-          ))}
-        </div>
+      <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
+        {teams.roles.map((role, index) => (
+          <FadeIn key={role.title} delay={index * 0.1}>
+            <FeatureCard
+              icon={roleIcons[role.title] ?? UsersRound}
+              title={role.title}
+              description={`${role.size}. ${role.body}`}
+            />
+          </FadeIn>
+        ))}
       </div>
-    </section>
+    </Section>
   )
 }

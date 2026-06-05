@@ -1,16 +1,25 @@
 import { useState, type FormEvent } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { content } from "@/content"
 import { registerEmail, isSupabaseConfigured } from "@/lib/supabase"
+import { sectionTints } from "@/lib/sectionTints"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import FadeIn from "@/components/effects/FadeIn"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
+import { cn } from "@/lib/utils"
 
 type Status = "idle" | "submitting" | "success" | "error"
 
-export default function RegistrationForm() {
+type RegistrationFormProps = {
+  className?: string
+}
+
+const registerTint = sectionTints.register
+
+export default function RegistrationForm({ className }: RegistrationFormProps) {
   const { registration } = content
+  const reducedMotion = useReducedMotion()
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -35,84 +44,104 @@ export default function RegistrationForm() {
   }
 
   return (
-    <section
-      id="register"
-      className="border-t border-border py-24 md:py-32"
-    >
-      <div className="mx-auto max-w-3xl px-6 text-center">
-        <FadeIn>
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            {registration.eyebrow}
-          </p>
-          <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">
-            {registration.title}
-          </h2>
-          <p className="mt-6 font-sans text-lg font-light text-muted-foreground">
-            {registration.description}
-          </p>
-        </FadeIn>
+    <div className={cn("w-full max-w-xl", className)}>
+      <p className="page-eyebrow text-[#6e6e73]">{registration.eyebrow}</p>
+      <h2
+        className="page-display-sm mt-4"
+        style={{ color: registerTint }}
+      >
+        {registration.title}
+      </h2>
+      <p className="page-body mt-6">{registration.description}</p>
 
-        <FadeIn delay={0.15}>
-          <form
-            onSubmit={handleSubmit}
-            className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-end"
+      <form
+        onSubmit={handleSubmit}
+        className="mt-10 flex flex-col items-end gap-4 sm:flex-row"
+      >
+        <div className="w-full flex-1">
+          <Label htmlFor="email" className="sr-only">
+            Email address
+          </Label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={registration.placeholder}
+            disabled={status === "submitting" || status === "success"}
+            className="w-full border-0 border-b border-border bg-transparent pb-2 font-sans text-base text-foreground outline-none placeholder:font-normal placeholder:text-muted-foreground focus:border-foreground"
+          />
+        </div>
+        <motion.div
+          whileHover={reducedMotion ? undefined : { scale: 1.02 }}
+          whileTap={reducedMotion ? undefined : { scale: 0.98 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Button
+            type="submit"
+            variant="cta"
+            size="lg"
+            disabled={status === "submitting" || status === "success"}
+            className="h-11 rounded-full px-8"
           >
-            <div className="w-full flex-1 text-left">
-              <Label htmlFor="email" className="sr-only">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={registration.placeholder}
-                disabled={status === "submitting" || status === "success"}
-                className="h-11 rounded-full border-white/20 bg-white/10 px-5 font-sans text-white placeholder:text-white/50 backdrop-blur-xl"
-              />
-            </div>
-            <Button
-              type="submit"
-              variant="glass"
-              size="lg"
-              disabled={status === "submitting" || status === "success"}
-              className="w-full rounded-full px-8 sm:w-auto"
-            >
-              {status === "submitting"
-                ? "Sending..."
-                : registration.submitLabel}
-            </Button>
-          </form>
-        </FadeIn>
+            {status === "submitting"
+              ? "Sending..."
+              : registration.submitLabel}
+          </Button>
+        </motion.div>
+      </form>
 
-        <div className="mt-4 min-h-6" aria-live="polite">
+      <div className="mt-4 min-h-6" aria-live="polite">
+        <AnimatePresence mode="wait">
           {status === "success" && (
-            <Alert className="border-emerald-500/30 bg-emerald-500/10 text-left">
-              <AlertDescription className="text-emerald-400">
-                {registration.successMessage}
-              </AlertDescription>
-            </Alert>
+            <motion.div
+              key="success"
+              initial={reducedMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reducedMotion ? undefined : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Alert className="border-emerald-200 bg-emerald-50 text-left">
+                <AlertDescription className="font-medium text-emerald-800">
+                  {registration.successMessage}
+                </AlertDescription>
+              </Alert>
+            </motion.div>
           )}
           {status === "error" && (
-            <Alert variant="destructive" className="text-left">
-              <AlertDescription>
-                {errorMsg ?? registration.errorMessage}
-              </AlertDescription>
-            </Alert>
+            <motion.div
+              key="error"
+              initial={reducedMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reducedMotion ? undefined : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Alert variant="destructive" className="text-left">
+                <AlertDescription>
+                  {errorMsg ?? registration.errorMessage}
+                </AlertDescription>
+              </Alert>
+            </motion.div>
           )}
           {status === "idle" && !isSupabaseConfigured && (
-            <p className="font-sans text-sm text-muted-foreground">
+            <motion.p
+              key="hint"
+              initial={reducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reducedMotion ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="page-body !text-sm"
+            >
               Supabase not configured yet — set env vars in{" "}
-              <code className="text-foreground">.env</code> to enable.
-            </p>
+              <code className="font-semibold text-foreground">.env</code> to
+              enable.
+            </motion.p>
           )}
-        </div>
-
-        <p className="mt-4 font-sans text-xs text-muted-foreground">
-          {registration.privacyNote}
-        </p>
+        </AnimatePresence>
       </div>
-    </section>
+
+      <p className="page-body mt-4 !text-xs">{registration.privacyNote}</p>
+    </div>
   )
 }

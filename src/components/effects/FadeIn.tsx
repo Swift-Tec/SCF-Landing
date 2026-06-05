@@ -1,7 +1,10 @@
+import type { ReactNode } from "react"
 import { motion, type HTMLMotionProps } from "framer-motion"
+import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { cn } from "@/lib/utils"
 
-type FadeInProps = HTMLMotionProps<"div"> & {
+type FadeInProps = Omit<HTMLMotionProps<"div">, "children"> & {
+  children: ReactNode
   delay?: number
   direction?: "up" | "down" | "left" | "right" | "none"
 }
@@ -21,7 +24,12 @@ export default function FadeIn({
   direction = "up",
   ...props
 }: FadeInProps) {
+  const reducedMotion = useReducedMotion()
   const offset = offsets[direction]
+
+  if (reducedMotion) {
+    return <div className={cn(className)}>{children}</div>
+  }
 
   return (
     <motion.div

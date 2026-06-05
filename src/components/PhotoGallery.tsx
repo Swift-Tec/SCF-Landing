@@ -1,46 +1,58 @@
 import { content } from "@/content"
+import Section from "@/components/apple/Section"
+import SectionHeading from "@/components/apple/SectionHeading"
 import AnimatedPhoto from "@/components/effects/AnimatedPhoto"
-import FadeIn from "@/components/effects/FadeIn"
+import vectorRibbon from "@/assets/photos/Vector@2x-6.png"
+import FloatingDecoration from "@/components/effects/FloatingDecoration"
 
 export default function PhotoGallery() {
   const { gallery } = content
 
   return (
-    <section id="gallery" className="border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <FadeIn className="max-w-2xl">
-          <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-primary">
-            {gallery.eyebrow}
-          </p>
-          <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl lg:text-6xl">
-            {gallery.title}
-          </h2>
-          <p className="mt-6 font-sans text-lg font-light text-muted-foreground">
-            {gallery.description}
-          </p>
-        </FadeIn>
+    <Section
+      id="gallery"
+      decoration={
+        <FloatingDecoration
+          src={vectorRibbon}
+          className="absolute -top-6 -left-16 w-64 rotate-12 opacity-65 md:w-80 lg:w-88"
+          y={10}
+          rotate={5}
+        />
+      }
+    >
+      <SectionHeading
+        eyebrow={gallery.eyebrow}
+        title={gallery.title}
+        description={gallery.description}
+        size="hero"
+        tint="gallery"
+      />
 
-        <div className="mt-14 flex flex-col gap-10">
+      <div className="mt-14 grid auto-rows-[minmax(15rem,auto)] gap-5 md:grid-cols-12 md:gap-6">
+        {gallery.photos.map((photo, index) => (
           <AnimatedPhoto
-            src={gallery.featured.src}
-            alt={gallery.featured.alt}
-            caption={gallery.featured.caption}
-            featured
+            key={photo.alt}
+            src={photo.src}
+            alt={photo.alt}
+            className={
+              index === 0
+                ? "md:col-span-7"
+                : index === 1
+                  ? "md:col-span-5 md:translate-y-16"
+                  : index === 2
+                    ? "md:col-span-5"
+                    : "md:col-span-7 md:translate-y-10"
+            }
+            enterScale={0.98}
+            delay={index * 0.1}
+            imageClassName={
+              index === 0 || index === 3
+                ? "aspect-[4/3] rounded-[2rem]"
+                : "aspect-[5/4] rounded-[2rem]"
+            }
           />
-
-          <div className="grid gap-8 md:grid-cols-2">
-            {gallery.photos.map((photo, index) => (
-              <AnimatedPhoto
-                key={photo.caption}
-                src={photo.src}
-                alt={photo.alt}
-                caption={photo.caption}
-                className={index === 0 ? "md:row-span-1" : undefined}
-              />
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
-    </section>
+    </Section>
   )
 }

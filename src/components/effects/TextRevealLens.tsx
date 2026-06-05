@@ -33,18 +33,18 @@ export default function TextRevealLens({ text, className }: TextRevealLensProps)
       onMouseMove={handleMove}
       className={cn("relative select-none py-8", className)}
     >
-      <p className="font-display text-center text-5xl text-muted-foreground/35 md:text-7xl lg:text-8xl">
+      <p className="font-sans font-bold tracking-tight text-center text-5xl text-muted-foreground/35 md:text-7xl lg:text-8xl">
         {text}
       </p>
 
       {reducedMotion ? (
-        <p className="absolute inset-0 flex items-center justify-center font-display text-5xl text-primary md:text-7xl lg:text-8xl">
+        <p className="absolute inset-0 flex items-center justify-center font-sans font-bold tracking-tight text-5xl text-primary md:text-7xl lg:text-8xl">
           {text}
         </p>
       ) : (
         <motion.p
           aria-hidden
-          className="pointer-events-none absolute inset-0 flex items-center justify-center font-display text-5xl text-foreground md:text-7xl lg:text-8xl"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center font-sans font-bold tracking-tight text-5xl text-foreground md:text-7xl lg:text-8xl"
           style={{ clipPath }}
         >
           {text}

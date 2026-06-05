@@ -5,6 +5,8 @@ import presentation from "./assets/photos/presentation.png"
 import visionPro from "./assets/photos/vision-pro.png"
 import swiftLogoOrange from "./assets/photos/swift-logo-orange.png"
 import swiftLogoWhite from "./assets/photos/swift-logo-white.png"
+import airpodsMaxFront from "./assets/photos/airpods-max-front-trp.png"
+import airpodsMaxBack from "./assets/photos/airpods-max-back-trp.png"
 
 export const content = {
   brand: {
@@ -21,52 +23,39 @@ export const content = {
     { label: "About", href: "#about" },
     { label: "Event", href: "#event" },
     { label: "Teams", href: "#teams" },
+    { label: "Prizes", href: "#prizes" },
     { label: "Register", href: "#register" },
   ],
 
   hero: {
-    eyebrow: "Second Edition",
-    title: "Swift Challenge Fest 2026",
-    subtitle:
-      "Three days. One language. Endless ideas. Join the SwiftTec community for a hackathon dedicated to building the next generation of apps with Swift.",
-    primaryCta: { label: "Register now", href: "#register" },
-    secondaryCta: { label: "Learn more", href: "#about" },
-    stats: [
-      { value: "72h", label: "of building" },
-      { value: "100+", label: "Swift developers" },
-      { value: "$10K", label: "in prizes" },
-    ],
+    titleTop: "Swift Challenge",
+    titleBottom: "Fest 2026",
+    photo: {
+      src: sf2025,
+      alt: "Swift Challenge Fest 2025 community group photo",
+    },
   },
 
   gallery: {
     eyebrow: "Last year",
     title: "Swift Challenge Fest 2025",
     description:
-      "A glimpse at the community, the competition, and the energy that brought the first edition to life.",
-    featured: {
-      src: sf2025,
-      caption: "Swift Challenge Fest 2025 — The community",
-      alt: "Large group photo of Swift Challenge Fest 2025 participants and organizers",
-    },
+      "Swift Challenge Fest is SwiftTec's community hackathon: a weekend where students and developers build real apps in Swift, learn from mentors, and present their work on stage. The 2025 edition was our first full run — teams shipped prototypes across iOS, macOS, and more, with workshops, mentorship, and a final demo day at the HUB. The photos below are from that weekend.",
     photos: [
       {
         src: sfganadores2025,
-        caption: "Swift Challenge Fest 2025 — First place winners",
         alt: "Winners receiving first place awards on stage",
       },
       {
         src: participantes,
-        caption: "Swift Challenge Fest 2025 — Designing together",
         alt: "Participants collaborating on a whiteboard wireframe",
       },
       {
         src: presentation,
-        caption: "Swift Challenge Fest 2025 — Ensamblando Realidades",
         alt: "Presenters on stage with Swift Challenge Fest branding",
       },
       {
         src: visionPro,
-        caption: "Swift Challenge Fest 2025 — Exploring spatial computing",
         alt: "Developer using Apple Vision Pro during the hackathon",
       },
     ],
@@ -79,34 +68,28 @@ export const content = {
       "SwiftTec is a community of engineers, designers, and students who believe Swift is one of the most exciting languages to build with today — across iOS, macOS, server, and beyond.",
       "Swift Challenge Fest is our flagship hackathon: a focused weekend where builders ship Swift projects, learn from mentors, and meet the people pushing the language forward.",
     ],
-    image: {
-      src: presentation,
-      caption: "Swift Challenge Fest 2025 — Opening presentation",
-      alt: "Team presenting at Swift Challenge Fest 2025",
-    },
   },
 
   event: {
     eyebrow: "The event",
     title: "What to expect.",
     description:
-      "A three-day intensive where teams design, build, and demo a Swift project from scratch. Mentors from across the industry, workshops on the latest Swift features, and a final showcase with judges from leading product teams.",
+      "A focused two-day build where teams design, ship, and demo a Swift project from scratch — with mentors, workshops, and a final showcase judged by product and engineering leaders.",
     details: [
       {
         label: "Dates",
-        value: "September 26 – 28, 2026",
-        sub: "Friday evening kickoff through Sunday demos",
+        value: "June 11 – 12",
+        sub: "Two days of building, workshops, and demos",
       },
       {
         label: "Location",
-        value: "SwiftTec HQ — Buenos Aires, AR",
-        sub: "On-site only · meals & swag included",
+        value: "HUB Garza T.",
+        sub: "HUB de innovación y Emprendimiento Eduardo Garza T. · On-site · meals & swag included",
       },
       {
         label: "Format",
         value: "72-hour hackathon",
         sub: "Workshops · mentorship · final demos",
-        image: visionPro,
       },
       {
         label: "Theme",
@@ -140,10 +123,52 @@ export const content = {
     ],
   },
 
+  prizes: {
+    eyebrow: "What you can win",
+    title: "Worth building for.",
+    description:
+      "Ship something great over the weekend and walk away with serious hardware. Three places. Three prizes. Zero boring rewards.",
+    items: [
+      {
+        rank: 1,
+        place: "First place",
+        name: "AirPods Max 2",
+        detail:
+          "Apple's flagship over-ear headphones with adaptive audio and USB-C. Built for the team that builds the best.",
+        tag: "Grand prize",
+        image: airpodsMaxFront,
+        imageBack: airpodsMaxBack,
+        imageAlt: "AirPods Max 2",
+      },
+      {
+        rank: 2,
+        place: "Second place",
+        name: "iPad",
+        detail:
+          "A brand-new iPad to keep building, sketching, and shipping long after the hackathon wraps.",
+        tag: "Runner-up",
+        image: null,
+        imageBack: null,
+        imageAlt: "",
+      },
+      {
+        rank: 3,
+        place: "Third place",
+        name: "$1,000 MXN gift card",
+        detail:
+          "A $1,000 MXN gift card to spend however your team sees fit. Treat yourselves — you earned it.",
+        tag: "Third prize",
+        image: null,
+        imageBack: null,
+        imageAlt: "",
+      },
+    ],
+  },
+
   registerCta: {
     headline: "Are you in?",
     description:
-      "Join builders, mentors, and judges for three days of Swift. Registration opens soon — save your spot today.",
+      "Join builders, mentors, and judges for the next edition. Registration opens soon — save your spot today.",
   },
 
   registration: {
@@ -159,12 +184,9 @@ export const content = {
   },
 
   footer: {
-    copyright: `© ${new Date().getFullYear()} SwiftTec. All rights reserved.`,
-    links: [
-      { label: "Code of Conduct", href: "#" },
-      { label: "Contact", href: "mailto:hello@swifttec.dev" },
-      { label: "Twitter", href: "#" },
-    ],
+    copyright: `All Rights Reserved © ${new Date().getFullYear()} SwiftTec.`,
+    privacy: { label: "Privacy & Policy", href: "#" },
+    watermark: "SwiftTec",
   },
 } as const
 

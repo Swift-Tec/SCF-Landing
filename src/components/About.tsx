@@ -1,44 +1,62 @@
+import { Code2, PartyPopper } from "lucide-react"
 import { content } from "@/content"
-import AnimatedPhoto from "@/components/effects/AnimatedPhoto"
+import Section from "@/components/apple/Section"
+import SectionHeading from "@/components/apple/SectionHeading"
+import FeatureCard from "@/components/apple/FeatureCard"
 import FadeIn from "@/components/effects/FadeIn"
-import StaggerChildren, {
-  StaggerItem,
-} from "@/components/effects/StaggerChildren"
+import vectorHeart from "@/assets/photos/Vector-2.png"
+import vectorSCurve from "@/assets/photos/Vector@2x-3.png"
+import FloatingDecoration from "@/components/effects/FloatingDecoration"
 
 export default function About() {
   const { about } = content
 
   return (
-    <section id="about" className="border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          <FadeIn direction="left" className="lg:col-span-4">
-            <p className="font-sans text-xs font-medium uppercase tracking-[0.2em] text-primary">
-              {about.eyebrow}
-            </p>
-            <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl lg:text-6xl">
-              {about.title}
-            </h2>
+    <Section
+      id="about"
+      decoration={
+        <>
+          <FloatingDecoration
+            src={vectorHeart}
+            className="absolute -right-16 top-1/2 -translate-y-1/2 w-64 opacity-70 md:w-80 lg:w-96"
+            y={10}
+            delay={0.15}
+          />
+          <FloatingDecoration
+            src={vectorSCurve}
+            className="absolute -left-14 bottom-16 w-56 -rotate-12 opacity-60 md:w-72 lg:w-80"
+            y={8}
+            rotate={-5}
+            delay={0.35}
+          />
+        </>
+      }
+    >
+      <div className="grid items-start gap-16 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-16 xl:gap-x-28">
+        <SectionHeading
+          eyebrow={about.eyebrow}
+          title={about.title}
+          size="hero"
+          tint="about"
+        />
+
+        <div className="flex flex-col gap-6 lg:pt-4">
+          <FadeIn delay={0.1}>
+            <FeatureCard
+              icon={Code2}
+              title="A Swift-native community."
+              description={about.body[0]}
+            />
           </FadeIn>
-
-          <StaggerChildren className="flex flex-col gap-6 font-sans text-lg font-light text-muted-foreground lg:col-span-4">
-            {about.body.map((paragraph, i) => (
-              <StaggerItem key={i}>
-                <p>{paragraph}</p>
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
-
-          <FadeIn delay={0.2} direction="right" className="lg:col-span-4">
-            <AnimatedPhoto
-              src={about.image.src}
-              alt={about.image.alt}
-              caption={about.image.caption}
-              className="lg:scale-105"
+          <FadeIn delay={0.18}>
+            <FeatureCard
+              icon={PartyPopper}
+              title="Our flagship hackathon."
+              description={about.body[1]}
             />
           </FadeIn>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }

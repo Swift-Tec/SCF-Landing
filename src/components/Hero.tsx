@@ -1,127 +1,195 @@
-import { Suspense, lazy } from "react"
+import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { content } from "@/content"
-import { Badge } from "@/components/ui/badge"
-import { buttonVariants } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import FadeIn from "@/components/effects/FadeIn"
+import FloatingDecoration from "@/components/effects/FloatingDecoration"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
+import { sectionTints } from "@/lib/sectionTints"
 import { cn } from "@/lib/utils"
+import vectorCursor from "@/assets/photos/Vector.png"
+import vectorSparkles from "@/assets/photos/Vector-1.png"
+import vectorSwirl from "@/assets/photos/Vector@2x-2.png"
 
-const GrainientBloom = lazy(() => import("@/components/effects/GrainientBloom"))
+const titleStyle = {
+  fontSize: "clamp(3rem, 10vw, 7.5rem)",
+  lineHeight: 0.92,
+  letterSpacing: "0.05em",
+} as const
 
-function ShaderFallback() {
-  return <div className="absolute inset-0 bg-background" aria-hidden />
+const bottomTitleStyle = {
+  fontSize: "clamp(3.25rem, 11vw, 8rem)",
+  lineHeight: 0.9,
+  letterSpacing: "0.06em",
+} as const
+
+const EASE = [0.22, 1, 0.36, 1] as const
+
+type HeroTitleProps = {
+  text: string
+  color: string
+  className?: string
+  delay?: number
+  layout?: "inline" | "stacked"
+  align?: "left" | "center"
+  size?: "default" | "large"
+}
+
+function HeroTitle({
+  text,
+  color,
+  className,
+  delay = 0.3,
+  layout = "inline",
+  align = "center",
+  size = "default",
+}: HeroTitleProps) {
+  const reducedMotion = useReducedMotion()
+  const words = text.split(" ")
+  const style = size === "large" ? bottomTitleStyle : titleStyle
+
+  const wordClassName =
+    layout === "stacked"
+      ? "block"
+      : "inline-block mr-[0.22em] last:mr-0"
+
+  const alignClass =
+    layout === "stacked"
+      ? align === "center"
+        ? "flex flex-col items-center text-center"
+        : "flex flex-col items-start text-left"
+      : align === "center"
+        ? "text-center"
+        : "text-left"
+
+  if (reducedMotion) {
+    return (
+      <h1
+        className={cn("font-sans font-semibold", alignClass, className)}
+        style={{ ...style, color }}
+      >
+        {words.map((word, i) => (
+          <span key={`${word}-${i}`} className={wordClassName}>
+            {word}
+          </span>
+        ))}
+      </h1>
+    )
+  }
+
+  return (
+    <motion.h1
+      className={cn("font-sans font-semibold", alignClass, className)}
+      style={{ ...style, color }}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.14, delayChildren: delay } },
+      }}
+    >
+      {words.map((word, i) => (
+        <motion.span
+          key={`${word}-${i}`}
+          className={wordClassName}
+          variants={{
+            hidden: { opacity: 0, y: 48, filter: "blur(8px)" },
+            visible: {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              transition: { duration: 0.75, ease: EASE },
+            },
+          }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.h1>
+  )
 }
 
 export default function Hero() {
   const { hero } = content
   const reducedMotion = useReducedMotion()
-  const { scrollY } = useScroll()
+  const sectionRef = useRef<HTMLElement>(null)
 
-  const bgY = useTransform(
-    scrollY,
-    [0, 1000],
-    reducedMotion ? [0, 0] : [0, 250]
-  )
-  const logoScale = useTransform(
-    scrollY,
-    [0, 400],
-    reducedMotion ? [1, 1] : [1, 0.85]
-  )
-  const logoOpacity = useTransform(
-    scrollY,
-    [0, 400],
-    reducedMotion ? [1, 1] : [1, 0.5]
-  )
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  })
+
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 40])
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.96])
 
   return (
-    <section className="relative flex min-h-[100dvh] items-center overflow-hidden">
-      <motion.div
-        className="absolute -inset-[60px]"
-        style={{ y: bgY }}
-      >
-        <Suspense fallback={<ShaderFallback />}>
-          <GrainientBloom
-            className="h-full w-full"
-            color1="#7c3aed"
-            color2="#f97316"
-            color3="#4c1d95"
-            timeSpeed={0.2}
-            grainAnimated
-          />
-        </Suspense>
-      </motion.div>
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100dvh] overflow-hidden bg-background"
+    >
+      <FloatingDecoration
+        src={vectorSparkles}
+        className="absolute -top-8 -right-12 z-20 w-56 opacity-80 md:w-72 lg:w-80"
+        y={14}
+        rotate={5}
+        duration={6}
+        delay={0.2}
+      />
+      <FloatingDecoration
+        src={vectorCursor}
+        className="absolute bottom-20 -left-8 z-20 w-44 -rotate-12 opacity-85 md:w-60 lg:w-72"
+        y={10}
+        rotate={-6}
+        duration={5}
+        delay={0.5}
+      />
+      <FloatingDecoration
+        src={vectorSwirl}
+        className="absolute -bottom-6 -right-10 z-20 w-48 rotate-6 opacity-75 md:w-64 lg:w-72"
+        y={12}
+        rotate={4}
+        duration={6.5}
+        delay={0.35}
+      />
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center px-6 pb-20 pt-32 text-center md:pt-40">
+      <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-7xl items-center justify-center px-5 py-24 md:px-10 md:py-28">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8"
-          style={{ scale: logoScale, opacity: logoOpacity }}
+          className="pointer-events-none relative z-10 flex w-full max-w-[min(100%,46rem)] flex-col items-center gap-5 text-center md:gap-7"
+          style={
+            reducedMotion
+              ? undefined
+              : { y: contentY, scale: contentScale }
+          }
         >
-          <img
-            src={content.brand.logoWhite}
-            alt="Swift logo"
-            className="mx-auto h-48 w-48 object-contain md:h-64 md:w-64"
-            loading="eager"
+          <HeroTitle
+            text={hero.titleTop}
+            color={sectionTints.heroTop}
+            delay={0.35}
+            layout="stacked"
+            align="center"
+          />
+
+          <motion.div
+            className="pointer-events-auto w-full"
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.92, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.15, ease: EASE }}
+          >
+            <img
+              src={hero.photo.src}
+              alt={hero.photo.alt}
+              className="h-auto w-full rounded-[2.25rem] object-cover md:rounded-[3rem] lg:rounded-[3.5rem]"
+              loading="eager"
+            />
+          </motion.div>
+
+          <HeroTitle
+            text={hero.titleBottom}
+            color={sectionTints.heroBottom}
+            delay={0.55}
+            layout="inline"
+            align="center"
+            size="large"
           />
         </motion.div>
-
-        <FadeIn>
-          <Badge
-            variant="outline"
-            className="mb-5 border-white/30 bg-white/10 px-4 py-1.5 font-sans text-xs uppercase tracking-[0.2em] text-white"
-          >
-            {hero.eyebrow}
-          </Badge>
-        </FadeIn>
-
-        <FadeIn delay={0.1}>
-          <h1 className="max-w-4xl font-display text-5xl font-normal leading-[1.05] text-white md:text-7xl lg:text-8xl">
-            {hero.title}
-          </h1>
-        </FadeIn>
-
-        <FadeIn delay={0.2}>
-          <p className="mt-6 max-w-2xl font-sans text-lg font-light text-white/70 md:text-xl">
-            {hero.subtitle}
-          </p>
-        </FadeIn>
-
-        <FadeIn delay={0.3}>
-          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-            <a
-              href={hero.primaryCta.href}
-              className={cn(buttonVariants({ variant: "glass", size: "lg" }), "rounded-full px-8")}
-            >
-              {hero.primaryCta.label}
-            </a>
-            <a
-              href={hero.secondaryCta.href}
-              className={cn(buttonVariants({ variant: "glass", size: "lg" }), "rounded-full px-8")}
-            >
-              {hero.secondaryCta.label}
-            </a>
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={0.4} className="mt-20 w-full max-w-2xl">
-          <Separator className="mb-10 bg-white/20" />
-          <dl className="grid grid-cols-3 gap-6">
-            {hero.stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <dt className="font-sans text-2xl font-bold text-white md:text-3xl">
-                  {stat.value}
-                </dt>
-                <dd className="mt-1 font-sans text-xs font-light uppercase tracking-wide text-white/60">
-                  {stat.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </FadeIn>
       </div>
     </section>
   )
