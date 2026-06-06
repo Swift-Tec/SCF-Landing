@@ -2,7 +2,6 @@ import { useState, type FormEvent } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { content } from "@/content"
 import { registerEmail, isSupabaseConfigured } from "@/lib/supabase"
-import { sectionTints } from "@/lib/sectionTints"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -14,8 +13,6 @@ type Status = "idle" | "submitting" | "success" | "error"
 type RegistrationFormProps = {
   className?: string
 }
-
-const registerTint = sectionTints.register
 
 export default function RegistrationForm({ className }: RegistrationFormProps) {
   const { registration } = content
@@ -45,11 +42,8 @@ export default function RegistrationForm({ className }: RegistrationFormProps) {
 
   return (
     <div className={cn("w-full max-w-xl", className)}>
-      <p className="page-eyebrow text-[#6e6e73]">{registration.eyebrow}</p>
-      <h2
-        className="page-display-sm mt-4"
-        style={{ color: registerTint }}
-      >
+      <p className="page-eyebrow text-muted-foreground">{registration.eyebrow}</p>
+      <h2 className="page-display-sm mt-4">
         {registration.title}
       </h2>
       <p className="page-body mt-6">{registration.description}</p>

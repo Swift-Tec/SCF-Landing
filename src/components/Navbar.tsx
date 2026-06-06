@@ -29,14 +29,12 @@ export default function Navbar() {
       )}
     >
       <div className="flex items-center justify-between px-6">
-        <a href="#" className="flex items-center gap-2.5">
-          <span className="font-sans text-base font-semibold tracking-tight text-foreground">
-            {content.brand.name}
-          </span>
+        <a href="#" className="font-sans text-base font-semibold tracking-tight text-foreground">
+          {content.brand.name}
         </a>
 
         <motion.nav
-          className="hidden items-center gap-8 md:flex"
+          className="hidden items-center gap-5 md:flex lg:gap-7"
           initial={reducedMotion ? false : "hidden"}
           animate="visible"
           variants={{

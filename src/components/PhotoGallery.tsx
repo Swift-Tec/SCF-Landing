@@ -2,8 +2,6 @@ import { content } from "@/content"
 import Section from "@/components/apple/Section"
 import SectionHeading from "@/components/apple/SectionHeading"
 import AnimatedPhoto from "@/components/effects/AnimatedPhoto"
-import vectorRibbon from "@/assets/photos/Vector@2x-6.png"
-import FloatingDecoration from "@/components/effects/FloatingDecoration"
 
 export default function PhotoGallery() {
   const { gallery } = content
@@ -11,21 +9,12 @@ export default function PhotoGallery() {
   return (
     <Section
       id="gallery"
-      decoration={
-        <FloatingDecoration
-          src={vectorRibbon}
-          className="absolute -top-6 -left-16 w-64 rotate-12 opacity-65 md:w-80 lg:w-88"
-          y={10}
-          rotate={5}
-        />
-      }
     >
       <SectionHeading
         eyebrow={gallery.eyebrow}
         title={gallery.title}
         description={gallery.description}
         size="hero"
-        tint="gallery"
       />
 
       <div className="mt-14 grid auto-rows-[minmax(15rem,auto)] gap-5 md:grid-cols-12 md:gap-6">

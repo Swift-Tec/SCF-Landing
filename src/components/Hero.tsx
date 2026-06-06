@@ -1,111 +1,16 @@
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
+import { Link } from "react-router-dom"
+import { CalendarDays, MapPin } from "lucide-react"
 import { content } from "@/content"
-import FloatingDecoration from "@/components/effects/FloatingDecoration"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
-import { sectionTints } from "@/lib/sectionTints"
+import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import vectorCursor from "@/assets/photos/Vector.png"
-import vectorSparkles from "@/assets/photos/Vector-1.png"
-import vectorSwirl from "@/assets/photos/Vector@2x-2.png"
-
-const titleStyle = {
-  fontSize: "clamp(3rem, 10vw, 7.5rem)",
-  lineHeight: 0.92,
-  letterSpacing: "0.05em",
-} as const
-
-const bottomTitleStyle = {
-  fontSize: "clamp(3.25rem, 11vw, 8rem)",
-  lineHeight: 0.9,
-  letterSpacing: "0.06em",
-} as const
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-type HeroTitleProps = {
-  text: string
-  color: string
-  className?: string
-  delay?: number
-  layout?: "inline" | "stacked"
-  align?: "left" | "center"
-  size?: "default" | "large"
-}
-
-function HeroTitle({
-  text,
-  color,
-  className,
-  delay = 0.3,
-  layout = "inline",
-  align = "center",
-  size = "default",
-}: HeroTitleProps) {
-  const reducedMotion = useReducedMotion()
-  const words = text.split(" ")
-  const style = size === "large" ? bottomTitleStyle : titleStyle
-
-  const wordClassName =
-    layout === "stacked"
-      ? "block"
-      : "inline-block mr-[0.22em] last:mr-0"
-
-  const alignClass =
-    layout === "stacked"
-      ? align === "center"
-        ? "flex flex-col items-center text-center"
-        : "flex flex-col items-start text-left"
-      : align === "center"
-        ? "text-center"
-        : "text-left"
-
-  if (reducedMotion) {
-    return (
-      <h1
-        className={cn("font-sans font-semibold", alignClass, className)}
-        style={{ ...style, color }}
-      >
-        {words.map((word, i) => (
-          <span key={`${word}-${i}`} className={wordClassName}>
-            {word}
-          </span>
-        ))}
-      </h1>
-    )
-  }
-
-  return (
-    <motion.h1
-      className={cn("font-sans font-semibold", alignClass, className)}
-      style={{ ...style, color }}
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.14, delayChildren: delay } },
-      }}
-    >
-      {words.map((word, i) => (
-        <motion.span
-          key={`${word}-${i}`}
-          className={wordClassName}
-          variants={{
-            hidden: { opacity: 0, y: 48, filter: "blur(8px)" },
-            visible: {
-              opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
-              transition: { duration: 0.75, ease: EASE },
-            },
-          }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.h1>
-  )
-}
+const RAINBOW =
+  "linear-gradient(90deg, #FF6B6B 0%, #FF9500 20%, #FFCC00 40%, #4CD964 60%, #007AFF 80%, #AF52DE 100%)"
 
 export default function Hero() {
   const { hero } = content
@@ -123,72 +28,91 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100dvh] overflow-hidden bg-background"
+      className="relative min-h-[100dvh] bg-white"
     >
-      <FloatingDecoration
-        src={vectorSparkles}
-        className="absolute -top-8 -right-12 z-20 w-56 opacity-80 md:w-72 lg:w-80"
-        y={14}
-        rotate={5}
-        duration={6}
-        delay={0.2}
-      />
-      <FloatingDecoration
-        src={vectorCursor}
-        className="absolute bottom-20 -left-8 z-20 w-44 -rotate-12 opacity-85 md:w-60 lg:w-72"
-        y={10}
-        rotate={-6}
-        duration={5}
-        delay={0.5}
-      />
-      <FloatingDecoration
-        src={vectorSwirl}
-        className="absolute -bottom-6 -right-10 z-20 w-48 rotate-6 opacity-75 md:w-64 lg:w-72"
-        y={12}
-        rotate={4}
-        duration={6.5}
-        delay={0.35}
-      />
-
-      <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-7xl items-center justify-center px-5 py-24 md:px-10 md:py-28">
+      <div className="relative z-10 mx-auto flex min-h-[100dvh] w-full max-w-6xl items-center justify-center px-5 py-24 md:px-10 md:py-28">
         <motion.div
-          className="pointer-events-none relative z-10 flex w-full max-w-[min(100%,46rem)] flex-col items-center gap-5 text-center md:gap-7"
-          style={
-            reducedMotion
-              ? undefined
-              : { y: contentY, scale: contentScale }
-          }
+          className="pointer-events-none relative z-10 flex w-full flex-col items-center overflow-visible text-center"
+          style={reducedMotion ? undefined : { y: contentY, scale: contentScale }}
         >
-          <HeroTitle
-            text={hero.titleTop}
-            color={sectionTints.heroTop}
-            delay={0.35}
-            layout="stacked"
-            align="center"
-          />
+          <motion.h1
+            className="-mb-4 font-sans font-semibold text-foreground md:-mb-5"
+            style={{
+              fontSize: "clamp(2.5rem, 9vw, 6rem)",
+              lineHeight: 1.1,
+              letterSpacing: "-0.025em",
+            }}
+            initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+          >
+            Swift
+          </motion.h1>
+
+          <motion.h1
+            className="overflow-visible leading-none"
+            initial={reducedMotion ? false : { opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.85, delay: 0.35, ease: EASE }}
+          >
+            <span
+              className="inline-block translate-y-1.5 overflow-visible px-1 pb-[0.5em] pt-0 md:translate-y-2"
+              style={{
+                fontSize: "clamp(4.5rem, 18vw, 11rem)",
+                lineHeight: 1.3,
+                fontFamily: "'Pacifico', cursive",
+                background: RAINBOW,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                WebkitBoxDecorationBreak: "clone",
+                boxDecorationBreak: "clone",
+              }}
+            >
+              challenge
+            </span>
+          </motion.h1>
+
+          <motion.h1
+            className="-mt-8 font-sans font-semibold text-foreground md:-mt-10"
+            style={{
+              fontSize: "clamp(2.5rem, 9vw, 6rem)",
+              lineHeight: 1.1,
+              letterSpacing: "-0.025em",
+            }}
+            initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
+          >
+            fest 2026
+          </motion.h1>
 
           <motion.div
-            className="pointer-events-auto w-full"
-            initial={reducedMotion ? false : { opacity: 0, scale: 0.92, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.15, ease: EASE }}
+            className="pointer-events-auto mt-12 flex flex-col items-center gap-5 md:mt-14 md:gap-6"
+            initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.72, ease: EASE }}
           >
-            <img
-              src={hero.photo.src}
-              alt={hero.photo.alt}
-              className="h-auto w-full rounded-[2.25rem] object-cover md:rounded-[3rem] lg:rounded-[3.5rem]"
-              loading="eager"
-            />
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-muted-foreground md:text-lg">
+              <span className="flex items-center gap-2">
+                <CalendarDays className="size-4 shrink-0 md:size-[1.125rem]" aria-hidden />
+                {hero.date}
+              </span>
+              <span className="flex items-center gap-2">
+                <MapPin className="size-4 shrink-0 md:size-[1.125rem]" aria-hidden />
+                {hero.venue}
+              </span>
+            </div>
+            <Link
+              to="/register"
+              className={cn(
+                buttonVariants({ variant: "cta", size: "default" }),
+                "rounded-full px-10 py-3 text-base font-semibold md:px-12 md:py-3.5 md:text-lg",
+              )}
+            >
+              {hero.ctaLabel}
+            </Link>
           </motion.div>
-
-          <HeroTitle
-            text={hero.titleBottom}
-            color={sectionTints.heroBottom}
-            delay={0.55}
-            layout="inline"
-            align="center"
-            size="large"
-          />
         </motion.div>
       </div>
     </section>

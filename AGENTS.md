@@ -27,9 +27,8 @@
 
 ## Supabase / Registration
 
-- Requires `.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (copy from `.env.example`).
-- The registration form gracefully handles missing config — it shows a hint instead of crashing.
-- Expected table schema is commented in `src/lib/supabase.ts`.
+- Requires `.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (copy from `.env.example`). Restart `pnpm dev` after changing `.env`.
+- SQL for `teams` and `registrations` tables is in `supabase/schema.sql`.
 
 ## WebGL / Shaders
 

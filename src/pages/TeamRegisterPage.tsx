@@ -2,25 +2,24 @@ import { useState, type FormEvent } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { Plus, Trash2, ArrowLeft, CheckCircle2 } from "lucide-react"
-import { registerTeam, type TeamMember } from "@/lib/supabase"
-import { sectionTints } from "@/lib/sectionTints"
+import {
+  registerTeam,
+  isSupabaseConfigured,
+  MAX_TEAM_MEMBERS,
+  type TeamMember,
+} from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { content } from "@/content"
-import vectorSparkles from "@/assets/photos/Vector-1.png"
-import vectorHeart from "@/assets/photos/Vector-2.png"
-import vectorMail from "@/assets/photos/Vector@2x-1.png"
-import vectorSwirl from "@/assets/photos/Vector@2x-2.png"
-
-const tint = sectionTints.register
 
 type Status = "idle" | "submitting" | "success" | "error"
 
-const EMPTY_MEMBER: TeamMember = { name: "", role: "", email: "" }
+const EMPTY_MEMBER: TeamMember = { name: "", email: "" }
 
 const inputClass =
   "w-full border-0 border-b border-border bg-transparent pb-2 font-sans text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-foreground/50 transition-colors"
 
-const labelClass = "block font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2"
+const labelClass =
+  "block font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2"
 
 function Field({
   label,
@@ -41,13 +40,12 @@ export default function TeamRegisterPage() {
   const [teamName, setTeamName] = useState("")
   const [university, setUniversity] = useState("")
   const [contactEmail, setContactEmail] = useState("")
-  const [projectIdea, setProjectIdea] = useState("")
   const [members, setMembers] = useState<TeamMember[]>([{ ...EMPTY_MEMBER }])
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   function addMember() {
-    if (members.length >= 5) return
+    if (members.length >= MAX_TEAM_MEMBERS) return
     setMembers((prev) => [...prev, { ...EMPTY_MEMBER }])
   }
 
@@ -63,6 +61,14 @@ export default function TeamRegisterPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (!isSupabaseConfigured) {
+      setStatus("error")
+      setErrorMsg(
+        "Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to .env, then restart pnpm dev.",
+      )
+      return
+    }
+
     setStatus("submitting")
     setErrorMsg(null)
 
@@ -71,7 +77,6 @@ export default function TeamRegisterPage() {
         team_name: teamName,
         contact_email: contactEmail,
         university,
-        project_idea: projectIdea,
         members: members.filter((m) => m.name.trim()),
       })
       setStatus("success")
@@ -83,22 +88,21 @@ export default function TeamRegisterPage() {
 
   if (status === "success") {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6">
-        <img src={vectorSparkles} alt="" aria-hidden className="pointer-events-none absolute -top-10 -right-10 w-64 opacity-70 select-none" />
-        <img src={vectorHeart} alt="" aria-hidden className="pointer-events-none absolute -bottom-10 -left-10 w-64 opacity-60 select-none" />
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-white px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="flex max-w-lg flex-col items-center text-center"
         >
-          <CheckCircle2 className="size-16 mb-6" style={{ color: tint }} />
-          <h1 className="font-sans text-4xl font-semibold" style={{ color: tint }}>
+          <CheckCircle2 className="mb-6 size-16 text-foreground" />
+          <h1 className="font-sans text-4xl font-semibold text-foreground">
             You're registered!
           </h1>
           <p className="mt-4 font-sans text-lg text-muted-foreground">
             Team <span className="font-semibold text-foreground/70">"{teamName}"</span> is on the list.
-            We'll reach out to <span className="font-semibold text-foreground/70">{contactEmail}</span> with next steps.
+            A confirmation email was sent to{" "}
+            <span className="font-semibold text-foreground/70">{contactEmail}</span>.
           </p>
           <Link
             to="/"
@@ -113,11 +117,7 @@ export default function TeamRegisterPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
-      <img src={vectorSparkles} alt="" aria-hidden className="pointer-events-none absolute -top-8 -right-12 w-64 opacity-65 select-none" />
-      <img src={vectorSwirl} alt="" aria-hidden className="pointer-events-none absolute top-1/3 -left-14 w-56 opacity-55 select-none" />
-      <img src={vectorMail} alt="" aria-hidden className="pointer-events-none absolute -bottom-8 -right-10 w-60 opacity-50 select-none" />
-      <img src={vectorHeart} alt="" aria-hidden className="pointer-events-none absolute bottom-1/4 -left-12 w-52 opacity-50 select-none" />
+    <div className="relative min-h-screen overflow-hidden bg-white">
 
       <div className="mx-auto max-w-2xl px-6 py-16 md:py-24">
         <Link
@@ -133,19 +133,18 @@ export default function TeamRegisterPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest" style={{ color: tint }}>
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             {content.brand.shortName} · {new Date().getFullYear()}
           </p>
-          <h1 className="mt-3 font-sans text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl" style={{ color: tint }}>
+          <h1 className="mt-3 font-sans text-5xl font-semibold leading-[1.05] tracking-tight text-foreground md:text-6xl">
             Register your team
           </h1>
           <p className="mt-5 font-sans text-lg text-muted-foreground">
-            Fill in your team details below. You can have up to 5 members.
+            Fill in your team details below. Up to {MAX_TEAM_MEMBERS} members per team.
           </p>
         </motion.div>
 
         <form onSubmit={handleSubmit} className="mt-14 flex flex-col gap-10">
-          {/* Team info */}
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -178,7 +177,7 @@ export default function TeamRegisterPage() {
               />
             </Field>
 
-            <Field label="Contact Email">
+            <Field label="Team leader email">
               <input
                 type="email"
                 required
@@ -187,20 +186,12 @@ export default function TeamRegisterPage() {
                 placeholder="team-lead@example.com"
                 className={inputClass}
               />
-            </Field>
-
-            <Field label="Project Idea (optional)">
-              <textarea
-                rows={3}
-                value={projectIdea}
-                onChange={(e) => setProjectIdea(e.target.value)}
-                placeholder="Briefly describe what you plan to build…"
-                className={`${inputClass} resize-none`}
-              />
+              <p className="mt-2 font-sans text-xs text-muted-foreground">
+                We'll send registration updates and event details to this address.
+              </p>
             </Field>
           </motion.section>
 
-          {/* Members */}
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -211,7 +202,9 @@ export default function TeamRegisterPage() {
               <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground/70">
                 Team Members
               </h2>
-              <span className="font-sans text-xs text-muted-foreground/70">{members.length} / 5</span>
+              <span className="font-sans text-xs text-muted-foreground/70">
+                {members.length} / {MAX_TEAM_MEMBERS}
+              </span>
             </div>
 
             <AnimatePresence initial={false}>
@@ -250,22 +243,13 @@ export default function TeamRegisterPage() {
                         className={inputClass}
                       />
                     </Field>
-                    <Field label="Role">
-                      <input
-                        type="text"
-                        value={member.role}
-                        onChange={(e) => updateMember(i, "role", e.target.value)}
-                        placeholder="e.g. iOS Developer"
-                        className={inputClass}
-                      />
-                    </Field>
-                    <Field label="Email">
+                    <Field label="Email (optional)">
                       <input
                         type="email"
                         value={member.email}
                         onChange={(e) => updateMember(i, "email", e.target.value)}
                         placeholder="jane@example.com"
-                        className={`${inputClass} sm:col-span-2`}
+                        className={inputClass}
                       />
                     </Field>
                   </div>
@@ -273,7 +257,7 @@ export default function TeamRegisterPage() {
               ))}
             </AnimatePresence>
 
-            {members.length < 5 && (
+            {members.length < MAX_TEAM_MEMBERS && (
               <button
                 type="button"
                 onClick={addMember}
@@ -285,13 +269,19 @@ export default function TeamRegisterPage() {
             )}
           </motion.section>
 
-          {/* Submit */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col gap-4 pt-4"
           >
+            {!isSupabaseConfigured && (
+              <p className="rounded-xl bg-amber-50 px-4 py-3 font-sans text-sm text-amber-900">
+                Supabase is not loaded. Check <code className="font-semibold">.env</code>{" "}
+                and restart the dev server (<code className="font-semibold">pnpm dev</code>).
+              </p>
+            )}
+
             {status === "error" && (
               <p className="rounded-xl bg-red-50 px-4 py-3 font-sans text-sm text-red-600">
                 {errorMsg}
@@ -302,9 +292,8 @@ export default function TeamRegisterPage() {
               type="submit"
               variant="cta"
               size="lg"
-              disabled={status === "submitting"}
+              disabled={status === "submitting" || !isSupabaseConfigured}
               className="h-14 w-full rounded-full text-base font-semibold"
-              style={{ backgroundColor: tint, borderColor: tint }}
             >
               {status === "submitting" ? "Registering…" : "Register Team"}
             </Button>

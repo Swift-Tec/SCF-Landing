@@ -4,6 +4,7 @@ dist
 .env
 .env.local
 .env.*.local
+supabase/.temp/
 *.log
 .pnpm-debug.log*
 *.tsbuildinfo

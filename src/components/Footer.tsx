@@ -30,10 +30,10 @@ export default function Footer({ embedded = false, className }: FooterProps) {
     <div className="flex min-h-0 flex-1 flex-col">
       <FadeIn direction="up">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="page-body !text-sm">{footer.copyright}</p>
+          <p className="page-body !text-sm !text-white">{footer.copyright}</p>
           <motion.a
             href={footer.privacy.href}
-            className="page-body !text-sm transition-colors hover:text-foreground"
+            className="page-body !text-sm !text-white transition-colors hover:!text-white/80"
             whileHover={reducedMotion ? undefined : { x: 2 }}
             transition={{ duration: 0.2 }}
           >
@@ -77,7 +77,7 @@ export default function Footer({ embedded = false, className }: FooterProps) {
   }
 
   return (
-    <footer className={cn("relative border-t border-border/80 bg-background py-32 md:py-40", className)}>
+    <footer data-theme="dark" className={cn("relative border-t border-border/80 bg-[#1d1d1f] py-32 text-white md:py-40", className)}>
       <div className="apple-section-shell flex min-h-[50vh] flex-col">{contentBlock}</div>
     </footer>
   )

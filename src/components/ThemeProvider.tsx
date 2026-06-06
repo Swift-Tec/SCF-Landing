@@ -1,19 +1,11 @@
 import { type ReactNode, useEffect } from "react"
 
+/** Landing site uses a fixed light theme to match the hero. */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
-    const apply = (dark: boolean) => {
-      const root = document.documentElement
-      root.setAttribute("data-theme", dark ? "dark" : "light")
-      root.classList.toggle("dark", dark)
-    }
-
-    const mq = window.matchMedia("(prefers-color-scheme: dark)")
-    apply(mq.matches)
-
-    const handler = (e: MediaQueryListEvent) => apply(e.matches)
-    mq.addEventListener("change", handler)
-    return () => mq.removeEventListener("change", handler)
+    const root = document.documentElement
+    root.setAttribute("data-theme", "light")
+    root.classList.remove("dark")
   }, [])
 
   return <>{children}</>

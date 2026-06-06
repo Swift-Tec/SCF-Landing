@@ -1,5 +1,4 @@
 import { motion } from "framer-motion"
-import { tintColor, type SectionTint } from "@/lib/sectionTints"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { cn } from "@/lib/utils"
 
@@ -13,7 +12,6 @@ type SectionHeadingProps = {
   className?: string
   titleClassName?: string
   size?: "default" | "hero"
-  tint: SectionTint
 }
 
 export default function SectionHeading({
@@ -24,10 +22,8 @@ export default function SectionHeading({
   className,
   titleClassName,
   size = "default",
-  tint,
 }: SectionHeadingProps) {
   const reducedMotion = useReducedMotion()
-  const color = tintColor(tint)
   const words = title.split(" ")
 
   return (
@@ -56,11 +52,10 @@ export default function SectionHeading({
 
       <h2
         className={cn(
-          "text-balance mt-4",
+          "text-balance mt-4 text-foreground",
           size === "hero" ? "page-display" : "page-display-sm",
           titleClassName,
         )}
-        style={{ color }}
       >
         {reducedMotion ? (
           title

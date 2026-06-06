@@ -1,4 +1,3 @@
-import vectorSparkles from "@/assets/photos/Vector-1.png"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import {
   animate,
@@ -19,11 +18,8 @@ import { content } from "@/content"
 import Section from "@/components/apple/Section"
 import SectionHeading from "@/components/apple/SectionHeading"
 import FadeIn from "@/components/effects/FadeIn"
-import FloatingDecoration from "@/components/effects/FloatingDecoration"
-import { sectionTints } from "@/lib/sectionTints"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 
-const prizesTint = sectionTints.prizes
 
 const EASE = [0.22, 1, 0.36, 1] as const
 const WHEEL_COOLDOWN_MS = 500
@@ -123,14 +119,6 @@ export default function Prizes() {
     <Section
       id="prizes"
       className="!px-0"
-      decoration={
-        <FloatingDecoration
-          src={vectorSparkles}
-          className="absolute -left-10 top-10 w-56 opacity-60 md:w-72 lg:w-80"
-          y={10}
-          delay={0.2}
-        />
-      }
     >
       <div className="apple-section-shell">
         <SectionHeading
@@ -138,7 +126,6 @@ export default function Prizes() {
           title={prizes.title}
           description={prizes.description}
           size="hero"
-          tint="prizes"
         />
       </div>
 
@@ -174,10 +161,7 @@ export default function Prizes() {
                       <RankIcon className="size-3.5" />
                       {prize.place}
                     </span>
-                    <span
-                      className="font-sans text-6xl font-semibold leading-none opacity-25 md:text-7xl"
-                      style={{ color: prizesTint }}
-                    >
+                    <span className="font-sans text-6xl font-semibold leading-none text-foreground/15 md:text-7xl">
                       {String(prize.rank).padStart(2, "0")}
                     </span>
                   </div>
@@ -241,15 +225,11 @@ export default function Prizes() {
                 {i === index ? (
                   <motion.span
                     layoutId="prize-indicator"
-                    className="block h-2 w-8 rounded-full"
-                    style={{ backgroundColor: prizesTint }}
+                    className="block h-2 w-8 rounded-full bg-foreground"
                     transition={{ type: "spring", stiffness: 380, damping: 28 }}
                   />
                 ) : (
-                  <span
-                    className="block h-2 w-2 rounded-full opacity-30 transition-opacity hover:opacity-50"
-                    style={{ backgroundColor: prizesTint }}
-                  />
+                  <span className="block h-2 w-2 rounded-full bg-foreground/25 transition-opacity hover:bg-foreground/40" />
                 )}
               </button>
             ))}

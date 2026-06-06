@@ -1,0 +1,2 @@
+[functions.send-team-confirmation]
+verify_jwt = true

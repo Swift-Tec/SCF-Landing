@@ -19,17 +19,22 @@ export const content = {
   },
 
   nav: [
+    { label: "Learn", href: "#learn" },
+    { label: "Agenda", href: "#agenda" },
     { label: "Gallery", href: "#gallery" },
     { label: "About", href: "#about" },
     { label: "Event", href: "#event" },
     { label: "Teams", href: "#teams" },
     { label: "Prizes", href: "#prizes" },
-    { label: "Register", href: "#register" },
+    { label: "FAQ", href: "#faq" },
   ],
 
   hero: {
     titleTop: "Swift Challenge",
     titleBottom: "Fest 2026",
+    date: "June 11 & 12, 2026",
+    venue: "Innovation Hub (HUB Garza T.)",
+    ctaLabel: "Register",
     photo: {
       src: sf2025,
       alt: "Swift Challenge Fest 2025 community group photo",
@@ -40,7 +45,7 @@ export const content = {
     eyebrow: "Last year",
     title: "Swift Challenge Fest 2025",
     description:
-      "Swift Challenge Fest is SwiftTec's community hackathon: a weekend where students and developers build real apps in Swift, learn from mentors, and present their work on stage. The 2025 edition was our first full run — teams shipped prototypes across iOS, macOS, and more, with workshops, mentorship, and a final demo day at the HUB. The photos below are from that weekend.",
+      "Swift Challenge Fest is SwiftTec's community hackathon: a weekend where students and developers build real apps in Swift, learn from mentors, and present their work on stage. The 2025 edition was our first full run — teams shipped prototypes across iOS, macOS, and more, with workshops, mentorship, and a final demo day at the Innovation Hub. The photos below are from that weekend.",
     photos: [
       {
         src: sfganadores2025,
@@ -57,6 +62,60 @@ export const content = {
       {
         src: visionPro,
         alt: "Developer using Apple Vision Pro during the hackathon",
+      },
+    ],
+  },
+
+  learn: {
+    eyebrow: "The experience",
+    title: "Learn, build and connect.",
+    description:
+      "Swift Challenge Fest brings together students passionate about the Apple ecosystem for two days of talks, hands-on workshops, and a hackathon. Whatever your level, you'll find activities built for you.",
+    image: presentation,
+    imageAlt: "Participants collaborating at Swift Challenge Fest",
+    categories: [
+      {
+        title: "Hackathon",
+        body: "Teams of 3. Live mentorship. Present to judges competing for prizes awarded to the best projects.",
+      },
+      {
+        title: "Talks",
+        body: "iOS, SwiftUI, UX Design, AI, and career paths — learn from people already working in the industry.",
+      },
+      {
+        title: "Workshops",
+        body: "Hands-on sessions covering Swift, SwiftUI, Apple frameworks, and developer tools.",
+      },
+      {
+        title: "Networking",
+        body: "Collaborative activities and social spaces to meet students and professionals in the field.",
+      },
+    ],
+  },
+
+  agenda: {
+    eyebrow: "Agenda",
+    title: "Two intense days.",
+    days: [
+      {
+        day: "Thursday, June 11",
+        items: [
+          "Check-in and welcome",
+          "Keynote and challenge reveal",
+          "Workshop: Introduction to Swift",
+          "Hackathon kickoff",
+          "Networking mixer",
+        ],
+      },
+      {
+        day: "Friday, June 12",
+        items: [
+          "Team mentorship sessions",
+          "Guest talks",
+          "Development close-out",
+          "Demo Day: final presentations",
+          "Awards and closing",
+        ],
       },
     ],
   },
@@ -83,8 +142,8 @@ export const content = {
       },
       {
         label: "Location",
-        value: "HUB Garza T.",
-        sub: "HUB de innovación y Emprendimiento Eduardo Garza T. · On-site · meals & swag included",
+        value: "Innovation Hub",
+        sub: "HUB Garza T. · Innovation & Entrepreneurship Hub · On-site · meals & swag included",
       },
       {
         label: "Format",
@@ -161,6 +220,38 @@ export const content = {
         image: null,
         imageBack: null,
         imageAlt: "",
+      },
+    ],
+  },
+
+  faq: {
+    eyebrow: "FAQ",
+    title: "Frequently asked questions.",
+    items: [
+      {
+        question: "Do I need Swift experience?",
+        answer:
+          "Not at all. We have tracks for every level — from complete beginners to developers already shipping on the Apple ecosystem.",
+      },
+      {
+        question: "How are teams formed?",
+        answer:
+          "You can register with your own team or solo. If you come alone, we'll help you connect with other participants before the event.",
+      },
+      {
+        question: "What does it cost to participate?",
+        answer:
+          "It's completely free. Your registration includes access to all workshops, mentorship sessions, food, and event swag.",
+      },
+      {
+        question: "What should I bring?",
+        answer:
+          "Your laptop with Xcode installed, a charger, and the drive to learn and ship something great.",
+      },
+      {
+        question: "Can I participate if I'm not a student?",
+        answer:
+          "The event is primarily aimed at university students, though early-career developers are welcome too.",
       },
     ],
   },
