@@ -168,26 +168,14 @@ export default function Prizes() {
 
                   <div className="relative flex min-h-[18rem] items-center justify-center md:min-h-[24rem]">
                     {visualSrc ? (
-                      <motion.div
-                        className="relative aspect-square w-full max-w-[26rem] md:max-w-[30rem] lg:max-w-[34rem]"
-                        animate={
-                          reducedMotion || !isActive
-                            ? undefined
-                            : { y: [0, -10, 0] }
-                        }
-                        transition={
-                          reducedMotion || !isActive
-                            ? undefined
-                            : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                        }
-                      >
+                      <div className="relative aspect-square w-full max-w-[26rem] md:max-w-[30rem] lg:max-w-[34rem]">
                         <img
                           src={visualSrc}
                           alt={prize.imageAlt}
                           loading="lazy"
                           className="h-full w-full object-contain"
                         />
-                      </motion.div>
+                      </div>
                     ) : (
                       <div className="flex size-36 items-center justify-center rounded-[2rem] border border-border/80 text-muted-foreground md:size-44">
                         <Icon className="size-16 md:size-20" strokeWidth={1.3} />

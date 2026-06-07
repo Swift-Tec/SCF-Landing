@@ -46,7 +46,7 @@ export default function FeatureCard({
         >
           {title}
         </h3>
-        <p className="page-body mt-3 flex-1 !text-base md:!text-lg">
+        <p className="mt-4 flex-1 font-sans text-base leading-relaxed text-muted-foreground md:text-[1.0625rem]">
           {description}
         </p>
       </article>

@@ -21,11 +21,8 @@ export const content = {
   nav: [
     { label: "Learn", href: "#learn" },
     { label: "Agenda", href: "#agenda" },
-    { label: "Gallery", href: "#gallery" },
+    { label: "2025", href: "#gallery" },
     { label: "About", href: "#about" },
-    { label: "Event", href: "#event" },
-    { label: "Teams", href: "#teams" },
-    { label: "Prizes", href: "#prizes" },
     { label: "FAQ", href: "#faq" },
   ],
 
@@ -123,9 +120,11 @@ export const content = {
   about: {
     eyebrow: "Who we are",
     title: "We are SwiftTec.",
+    subtitle:
+      "A student-led Apple developer community at Tecnológico de Monterrey. We run workshops, talks, and networking events — and every year we host Swift Challenge Fest, our flagship hackathon.",
     body: [
-      "SwiftTec is a community of engineers, designers, and students who believe Swift is one of the most exciting languages to build with today — across iOS, macOS, server, and beyond.",
-      "Swift Challenge Fest is our flagship hackathon: a focused weekend where builders ship Swift projects, learn from mentors, and meet the people pushing the language forward.",
+      "Engineers, designers, and students who build with Swift — across iOS, macOS, and beyond.",
+      "Our flagship hackathon: one weekend to ship projects, learn from mentors, and demo on stage.",
     ],
   },
 
@@ -254,6 +253,12 @@ export const content = {
           "The event is primarily aimed at university students, though early-career developers are welcome too.",
       },
     ],
+  },
+
+  weAreScroll: {
+    words: ["innovative", "creative", "designers", "builders", "engineers"],
+    photo: sf2025,
+    photoAlt: "Swift Challenge Fest 2025 — community photo",
   },
 
   registerCta: {

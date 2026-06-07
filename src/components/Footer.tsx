@@ -2,7 +2,6 @@ import { useRef } from "react"
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion"
 import { content } from "@/content"
 import FadeIn from "@/components/effects/FadeIn"
-import { sectionTints } from "@/lib/sectionTints"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { cn } from "@/lib/utils"
 
@@ -11,9 +10,10 @@ type FooterProps = {
   className?: string
 }
 
+const WATERMARK_COLOR = "rgba(255,255,255,0.09)"
+
 export default function Footer({ embedded = false, className }: FooterProps) {
   const { footer } = content
-  const footerColor = sectionTints.footer
   const reducedMotion = useReducedMotion()
   const watermarkRef = useRef<HTMLDivElement>(null)
 
@@ -24,7 +24,7 @@ export default function Footer({ embedded = false, className }: FooterProps) {
 
   const yPercent = useTransform(scrollYProgress, [0, 1], [18, 8])
   const watermarkScale = useTransform(scrollYProgress, [0, 1], [1, 1.04])
-  const watermarkTransform = useMotionTemplate`translateY(${yPercent}%) scale(${watermarkScale})`
+  const watermarkTransform = useMotionTemplate`translateX(-50%) translateY(${yPercent}%) scale(${watermarkScale})`
 
   const contentBlock = (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -46,15 +46,15 @@ export default function Footer({ embedded = false, className }: FooterProps) {
 
       <div
         ref={watermarkRef}
-        className="pointer-events-none relative -mx-6 h-[clamp(6.5rem,18vw,11.5rem)] shrink-0 overflow-hidden md:-mx-10"
+        className="pointer-events-none relative -mx-6 h-[clamp(7rem,19vw,16rem)] shrink-0 md:-mx-10"
         aria-hidden
       >
         <motion.p
-          className="absolute bottom-0 left-0 origin-bottom-left font-sans font-semibold leading-[0.82] tracking-[0.04em] whitespace-nowrap"
+          className="absolute bottom-0 left-1/2 origin-bottom font-sans font-semibold leading-[0.82] tracking-[0.04em] whitespace-nowrap"
           style={{
-            color: footerColor,
-            fontSize: "clamp(5.5rem, 16vw, 13rem)",
-            transform: reducedMotion ? "translateY(18%)" : watermarkTransform,
+            color: WATERMARK_COLOR,
+            fontSize: "clamp(5.5rem,19vw,16rem)",
+            transform: reducedMotion ? "translateX(-50%) translateY(18%)" : watermarkTransform,
           }}
         >
           {footer.watermark}

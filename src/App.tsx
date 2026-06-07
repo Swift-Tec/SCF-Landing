@@ -7,10 +7,9 @@ import LearnSection from "@/components/LearnSection"
 import AgendaSection from "@/components/AgendaSection"
 import PhotoGallery from "@/components/PhotoGallery"
 import About from "@/components/About"
-import EventDetails from "@/components/EventDetails"
-import TeamStructure from "@/components/TeamStructure"
 import Prizes from "@/components/Prizes"
 import FAQSection from "@/components/FAQSection"
+import WeAreScroll from "@/components/effects/WeAreScroll"
 import RegisterCTA from "@/components/RegisterCTA"
 import TeamRegisterPage from "@/pages/TeamRegisterPage"
 
@@ -25,10 +24,9 @@ function LandingPage() {
         <AgendaSection />
         <PhotoGallery />
         <About />
-        <EventDetails />
-        <TeamStructure />
-        <Prizes />
+        {/* <Prizes /> */}
         <FAQSection />
+        <WeAreScroll />
         <RegisterCTA />
       </main>
     </div>

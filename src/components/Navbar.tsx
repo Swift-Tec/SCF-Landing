@@ -24,17 +24,17 @@ export default function Navbar() {
       className={cn(
         "fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl -translate-x-1/2 rounded-full border transition-all duration-300",
         scrolled
-          ? "border-border bg-background/85 py-2.5 shadow-lg backdrop-blur-xl"
-          : "border-transparent bg-transparent py-3 shadow-none",
+          ? "border-border bg-background/85 py-1.5 shadow-lg backdrop-blur-xl"
+          : "border-transparent bg-transparent py-2 shadow-none",
       )}
     >
-      <div className="flex items-center justify-between px-6">
-        <a href="#" className="font-sans text-base font-semibold tracking-tight text-foreground">
+      <div className="flex items-center justify-between px-5">
+        <a href="#" className="font-sans text-sm font-semibold tracking-tight text-foreground">
           {content.brand.name}
         </a>
 
         <motion.nav
-          className="hidden items-center gap-5 md:flex lg:gap-7"
+          className="hidden items-center gap-4 md:flex lg:gap-6"
           initial={reducedMotion ? false : "hidden"}
           animate="visible"
           variants={{
@@ -51,7 +51,7 @@ export default function Navbar() {
                 visible: { opacity: 1, y: 0 },
               }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="font-sans text-base font-normal text-[#515154] transition-colors hover:text-foreground"
+              className="font-sans text-sm font-normal text-[#515154] transition-colors hover:text-foreground"
             >
               {item.label}
             </MotionLink>
@@ -68,7 +68,7 @@ export default function Navbar() {
               to="/register"
               className={cn(
                 buttonVariants({ variant: "cta", size: "default" }),
-                "rounded-full px-6 text-base font-semibold",
+                "rounded-full px-4 text-sm font-semibold",
               )}
             >
               Register

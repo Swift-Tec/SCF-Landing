@@ -1,7 +1,17 @@
+import { Trophy, Mic, Wrench, Users } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { content } from "@/content"
 import Section from "@/components/apple/Section"
 import SectionHeading from "@/components/apple/SectionHeading"
+import FeatureCard from "@/components/apple/FeatureCard"
 import FadeIn from "@/components/effects/FadeIn"
+
+const categoryIcons: Record<string, LucideIcon> = {
+  Hackathon: Trophy,
+  Talks: Mic,
+  Workshops: Wrench,
+  Networking: Users,
+}
 
 export default function LearnSection() {
   const { learn } = content
@@ -24,17 +34,15 @@ export default function LearnSection() {
         </FadeIn>
       </div>
 
-      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-14 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {learn.categories.map((cat, i) => (
-          <FadeIn key={cat.title} delay={i * 0.08}>
-            <article className="rounded-2xl border border-border/80 bg-card p-6">
-              <h3 className="font-sans text-base font-semibold text-foreground">
-                {cat.title}
-              </h3>
-              <p className="mt-2 font-sans text-sm leading-relaxed text-muted-foreground">
-                {cat.body}
-              </p>
-            </article>
+          <FadeIn key={cat.title} delay={i * 0.08} className="h-full">
+            <FeatureCard
+              icon={categoryIcons[cat.title] ?? Trophy}
+              title={cat.title}
+              description={cat.body}
+              className="h-full"
+            />
           </FadeIn>
         ))}
       </div>

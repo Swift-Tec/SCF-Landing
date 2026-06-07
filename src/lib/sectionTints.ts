@@ -19,7 +19,7 @@ export const sectionTints = {
   prizes: foreground,
   faq: foreground,
   register: foreground,
-  footer: "rgba(255,255,255,0.22)",
+  footer: foreground,
 } as const
 
 export const progressBarColor = foreground
