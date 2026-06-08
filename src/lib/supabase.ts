@@ -100,15 +100,12 @@ async function sendTeamConfirmationEmail(data: TeamRegistration): Promise<void> 
   )
 
   if (error) {
-    throw new Error(formatSupabaseError(error))
+    console.error("sendTeamConfirmationEmail:", formatSupabaseError(error))
+    return
   }
 
   if (result && typeof result === "object" && "error" in result) {
-    const msg =
-      typeof result.error === "string"
-        ? result.error
-        : "Confirmation email could not be sent."
-    throw new Error(msg)
+    console.error("sendTeamConfirmationEmail:", result.error)
   }
 }
 
