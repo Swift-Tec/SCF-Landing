@@ -15,6 +15,24 @@ type Status = "idle" | "submitting" | "success" | "error"
 
 const EMPTY_MEMBER: TeamMember = { name: "", email: "" }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function validateForm(
+  teamName: string,
+  university: string,
+  contactEmail: string,
+  members: TeamMember[],
+): string | null {
+  if (teamName.trim().length < 3) return "Team name must be at least 3 characters."
+  if (university.trim().length < 3) return "University must be at least 3 characters."
+  if (!EMAIL_RE.test(contactEmail.trim())) return "Please enter a valid team leader email."
+  for (const [i, m] of members.entries()) {
+    if (m.email.trim() && !EMAIL_RE.test(m.email.trim()))
+      return `Member ${i + 1} has an invalid email address.`
+  }
+  return null
+}
+
 const inputClass =
   "w-full border-0 border-b border-border bg-transparent pb-2 font-sans text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-foreground/50 transition-colors"
 
@@ -69,6 +87,13 @@ export default function TeamRegisterPage() {
       return
     }
 
+    const validationError = validateForm(teamName, university, contactEmail, members)
+    if (validationError) {
+      setStatus("error")
+      setErrorMsg(validationError)
+      return
+    }
+
     setStatus("submitting")
     setErrorMsg(null)
 
@@ -82,7 +107,12 @@ export default function TeamRegisterPage() {
       setStatus("success")
     } catch (err) {
       setStatus("error")
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.")
+      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again."
+      setErrorMsg(
+        msg.includes("duplicate") || msg.includes("unique")
+          ? "This email is already registered. Each team leader can only register once."
+          : msg,
+      )
     }
   }
 
