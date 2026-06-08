@@ -134,7 +134,12 @@ export async function registerTeam(data: TeamRegistration): Promise<void> {
     members,
   })
 
-  if (error) throw new Error(formatSupabaseError(error))
+  if (error) {
+    if (error.code === "23505") {
+      throw new Error("This email is already registered. Each team leader can only register once.")
+    }
+    throw new Error(formatSupabaseError(error))
+  }
 
   await sendTeamConfirmationEmail({ ...data, members })
 }

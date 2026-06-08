@@ -107,12 +107,7 @@ export default function TeamRegisterPage() {
       setStatus("success")
     } catch (err) {
       setStatus("error")
-      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again."
-      setErrorMsg(
-        msg.includes("duplicate") || msg.includes("unique")
-          ? "This email is already registered. Each team leader can only register once."
-          : msg,
-      )
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.")
     }
   }
 
