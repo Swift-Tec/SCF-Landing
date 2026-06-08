@@ -1,5 +1,4 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { Resend } from "npm:resend@4"
 import {
   buildTeamConfirmationEmail,
   teamConfirmationSubject,
@@ -26,17 +25,21 @@ Deno.serve(async (req) => {
     })
   }
 
-  const apiKey = Deno.env.get("RESEND_API_KEY")
-  const fromEmail =
-    Deno.env.get("RESEND_FROM") ?? "Swift Challenge Fest <onboarding@resend.dev>"
+  const apiKey = Deno.env.get("BREVO_API_KEY")
+  const fromEmail = Deno.env.get("BREVO_FROM_EMAIL") ?? ""
+  const fromName = Deno.env.get("BREVO_FROM_NAME") ?? "Swift Challenge Fest"
   const siteUrl = Deno.env.get("SITE_URL")
 
-  if (!apiKey || apiKey === "re_xxxxxxxxx") {
+  if (!apiKey) {
     return new Response(
-      JSON.stringify({
-        error:
-          "Email service not configured. Set RESEND_API_KEY (replace re_xxxxxxxxx with your real key) in Supabase secrets or .env for local serve.",
-      }),
+      JSON.stringify({ error: "Email service not configured. Set BREVO_API_KEY in Supabase secrets." }),
+      { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    )
+  }
+
+  if (!fromEmail) {
+    return new Response(
+      JSON.stringify({ error: "Email service not configured. Set BREVO_FROM_EMAIL in Supabase secrets." }),
       { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     )
   }
@@ -57,29 +60,34 @@ Deno.serve(async (req) => {
       ? body.members.filter((m) => m?.name?.trim())
       : []
 
-    const emailData = {
+    const htmlContent = buildTeamConfirmationEmail({
       to,
       team_name: teamName,
       university: body.university.trim(),
       members,
       siteUrl,
-    }
-
-    const resend = new Resend(apiKey)
-    const { error } = await resend.emails.send({
-      from: fromEmail,
-      to,
-      subject: teamConfirmationSubject(teamName),
-      html: buildTeamConfirmationEmail(emailData),
     })
 
-    if (error) {
-      console.error("Resend error:", error)
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "api-key": apiKey,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: fromName, email: fromEmail },
+        to: [{ email: to }],
+        subject: teamConfirmationSubject(teamName),
+        htmlContent,
+      }),
+    })
+
+    if (!res.ok) {
+      const detail = await res.text()
+      console.error("Brevo error:", detail)
       return new Response(
-        JSON.stringify({
-          error: "Failed to send confirmation email",
-          detail: error.message,
-        }),
+        JSON.stringify({ error: "Failed to send confirmation email", detail }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       )
     }
