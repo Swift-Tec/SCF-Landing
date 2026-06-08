@@ -45,10 +45,10 @@ export default function AgendaSection() {
                   </div>
                 ))}
 
-                {"note" in day && day.note && (
+                {"note" in day && (day as { note?: string }).note && (
                   <p className="mt-4 font-sans text-xs leading-relaxed text-muted-foreground">
                     <span className="font-semibold text-foreground/60">Note:</span>{" "}
-                    {day.note}
+                    {(day as { note: string }).note}
                   </p>
                 )}
               </div>
