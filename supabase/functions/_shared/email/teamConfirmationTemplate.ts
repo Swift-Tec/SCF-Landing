@@ -80,7 +80,8 @@ function detailRow(label: string, value: string): string {
 
 export function buildTeamConfirmationEmail(data: TeamConfirmationEmailData): string {
   const t = emailTheme
-  const siteUrl = data.siteUrl?.replace(/\/$/, "") ?? "https://swiftchallengefest.com"
+  const siteUrl =
+    data.siteUrl?.replace(/\/$/, "") ?? "https://swift-challenge-fest.vercel.app"
   const membersHtml = memberRows(data.members)
 
   return `<!DOCTYPE html>

@@ -93,25 +93,60 @@ export const content = {
   agenda: {
     eyebrow: "Agenda",
     title: "Two intense days.",
+    columns: {
+      time: "Time",
+      event: "Event",
+      location: "Location",
+    },
     days: [
       {
         day: "Thursday, June 11",
         items: [
-          "Check-in and welcome",
-          "Keynote and challenge reveal",
-          "Workshop: Introduction to Swift",
-          "Hackathon kickoff",
-          "Networking mixer",
+          {
+            time: "5:30 pm",
+            event: "Challenge launch",
+            location: "A3-101",
+          },
+          {
+            time: "5:30 pm onwards",
+            event: "Dinner",
+            location: "A3-101",
+          },
         ],
       },
       {
         day: "Friday, June 12",
         items: [
-          "Team mentorship sessions",
-          "Guest talks",
-          "Development close-out",
-          "Demo Day: final presentations",
-          "Awards and closing",
+          {
+            time: "2:00 – 3:00 pm",
+            event: "Roll call (app submission)",
+            location: "Innovation Hub",
+          },
+          {
+            time: "2:30 – 3:30 pm",
+            event: "App showcase (R&D + general)",
+            location: "Innovation Hub",
+          },
+          {
+            time: "3:30 – 4:00 pm",
+            event: "Alumni panel (celebration)",
+            location: "Innovation Hub",
+          },
+          {
+            time: "4:00 – 6:00 pm",
+            event: "Pitches",
+            location: "Innovation Hub",
+          },
+          {
+            time: "6:00 – 6:30 pm",
+            event: "Deliberation / community builders",
+            location: "Innovation Hub",
+          },
+          {
+            time: "6:30 – 7:00 pm",
+            event: "Awards ceremony & closing",
+            location: "Innovation Hub",
+          },
         ],
       },
     ],

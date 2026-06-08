@@ -85,7 +85,7 @@ Your hosted Edge Function reads secrets from Supabase, not your local `.env`:
 supabase link --project-ref YOUR_PROJECT_REF
 supabase secrets set RESEND_API_KEY=re_xxxxxxxxx
 supabase secrets set RESEND_FROM="Swift Challenge Fest <onboarding@resend.dev>"
-supabase secrets set SITE_URL=https://your-production-url.com
+supabase secrets set SITE_URL=https://swift-challenge-fest.vercel.app
 supabase functions deploy send-team-confirmation
 ```
 

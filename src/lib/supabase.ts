@@ -1,7 +1,14 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 
-const url = import.meta.env.VITE_SUPABASE_URL
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+function readEnv(name: "VITE_SUPABASE_URL" | "VITE_SUPABASE_ANON_KEY"): string | undefined {
+  const value = import.meta.env[name]
+  if (typeof value !== "string") return undefined
+  const trimmed = value.trim()
+  return trimmed || undefined
+}
+
+const url = readEnv("VITE_SUPABASE_URL")
+const anonKey = readEnv("VITE_SUPABASE_ANON_KEY")
 
 export const isSupabaseConfigured = Boolean(url && anonKey)
 
@@ -30,7 +37,17 @@ export function formatSupabaseError(error: unknown): string {
 
   if (parts.length > 0) return parts.join(" — ")
 
-  if (error instanceof Error && error.message) return error.message
+  if (error instanceof Error && error.message) {
+    const msg = error.message
+    if (
+      msg === "Failed to fetch" ||
+      msg.includes("NetworkError") ||
+      msg.includes("Load failed")
+    ) {
+      return "Could not reach Supabase. Check your network connection, then verify VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set in Vercel and redeploy."
+    }
+    return msg
+  }
 
   return "Something went wrong. Please try again."
 }

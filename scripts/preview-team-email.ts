@@ -14,7 +14,7 @@ const html = buildTeamConfirmationEmail({
     { name: "Alex Chen", email: "alex@example.com" },
     { name: "Sam Rivera" },
   ],
-  siteUrl: "http://localhost:5173",
+  siteUrl: "https://swift-challenge-fest.vercel.app",
 })
 
 const outDir = resolve(root, "emails")
