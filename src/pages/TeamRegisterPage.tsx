@@ -27,8 +27,8 @@ function validateForm(
   if (university.trim().length < 3) return "University must be at least 3 characters."
   if (!EMAIL_RE.test(contactEmail.trim())) return "Please enter a valid team leader email."
   for (const [i, m] of members.entries()) {
-    if (m.email.trim() && !EMAIL_RE.test(m.email.trim()))
-      return `Member ${i + 1} has an invalid email address.`
+    if (!m.email.trim()) return `Member ${i + 1} email is required.`
+    if (!EMAIL_RE.test(m.email.trim())) return `Member ${i + 1} has an invalid email address.`
   }
   return null
 }
@@ -126,8 +126,9 @@ export default function TeamRegisterPage() {
           </h1>
           <p className="mt-4 font-sans text-lg text-muted-foreground">
             Team <span className="font-semibold text-foreground/70">"{teamName}"</span> is on the list.
-            A confirmation email was sent to{" "}
-            <span className="font-semibold text-foreground/70">{contactEmail}</span>.
+            We'll send a confirmation email to{" "}
+            <span className="font-semibold text-foreground/70">{contactEmail}</span>{" "}
+            shortly.
           </p>
           <Link
             to="/"
@@ -268,9 +269,10 @@ export default function TeamRegisterPage() {
                         className={inputClass}
                       />
                     </Field>
-                    <Field label="Email (optional)">
+                    <Field label="Email">
                       <input
                         type="email"
+                        required
                         value={member.email}
                         onChange={(e) => updateMember(i, "email", e.target.value)}
                         placeholder="jane@example.com"

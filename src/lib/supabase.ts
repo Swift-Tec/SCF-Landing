@@ -81,33 +81,6 @@ export type TeamRegistration = {
   members: TeamMember[]
 }
 
-async function sendTeamConfirmationEmail(data: TeamRegistration): Promise<void> {
-  if (!supabase) return
-
-  const { data: result, error } = await supabase.functions.invoke(
-    "send-team-confirmation",
-    {
-      body: {
-        to: data.contact_email.trim().toLowerCase(),
-        team_name: data.team_name.trim(),
-        university: data.university.trim(),
-        members: data.members.map((m) => ({
-          name: m.name.trim(),
-          email: m.email.trim() || undefined,
-        })),
-      },
-    },
-  )
-
-  if (error) {
-    console.error("sendTeamConfirmationEmail:", formatSupabaseError(error))
-    return
-  }
-
-  if (result && typeof result === "object" && "error" in result) {
-    console.error("sendTeamConfirmationEmail:", result.error)
-  }
-}
 
 export async function registerTeam(data: TeamRegistration): Promise<void> {
   if (!supabase) {
@@ -140,6 +113,4 @@ export async function registerTeam(data: TeamRegistration): Promise<void> {
     }
     throw new Error(formatSupabaseError(error))
   }
-
-  await sendTeamConfirmationEmail({ ...data, members })
 }
