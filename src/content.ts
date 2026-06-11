@@ -105,12 +105,12 @@ export const content = {
           {
             time: "5:30 pm",
             event: "Challenge launch",
-            location: "A3-101",
+            location: "BiblioTEC Sala Fábula Piso 6",
           },
           {
             time: "5:30 pm onwards",
             event: "Dinner",
-            location: "A3-101",
+            location: "BiblioTEC Sala Fábula Piso 6",
           },
         ],
       },
